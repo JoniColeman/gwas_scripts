@@ -21,7 +21,7 @@ MakeKeepIDs.sh:  Make keepids.txt file for use with T.Flutre's HapMap3 OpenWetWa
 
 Make_glist.sh:  Script to make a glist-file from the gene file downloaded from UCSC Table Browser, for use in annotation in PLINK
 
-ManhattanPlotinR.R:  Wrapper script for running Mike Weale's manhattan_v1.R script to generate Manhattan plots from association result
+ManhattanPlotinR.R:  Wrapper script for running Mike Weale's manhattan_v2.R script to generate Manhattan plots from association result
 
 Master_imputation_script_posterior_sampled_haps.sh:  Script to control submission of posterior-sampling imputation jobs to a SGE-based cluster. Modified from scripts provided with Impute2
 
