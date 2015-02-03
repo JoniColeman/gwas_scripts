@@ -37,7 +37,7 @@ PlotPCs.R:  Use qplot option from ggplot2 to plot samples on first two principal
 
 Prototype_imputation_job_posterior_sampled_haps.sh:  Posterior-sampling imputation job script for Impute2. Modified from scripts provided with Impute2
 
-QQPlotinR.R:  Wrapper script to generate QQ plots from association results, using Mike Weale's qq_plot_v6.R
+QQPlotinR.R:  Wrapper script to generate QQ plots from association results, using Mike Weale's qq_plot_v7.R
 
 README.md:  This file!
 
@@ -47,5 +47,5 @@ highLDregions4bim_b37.awk:  Awk script to remove regions of high-LD from LD-prun
 
 manhattan_v2.R:  Mike Weale's Manhattan plot script
 
-qq_plot_v6.R:  Mike Weale's QQ-plot script
+qq_plot_v7.R:  Mike Weale's QQ-plot script
 
