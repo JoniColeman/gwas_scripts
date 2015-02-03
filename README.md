@@ -45,7 +45,7 @@ ReplaceDots.sh:  Post-imputation clean-up file for Phase1_Integrated 1KG referen
 
 highLDregions4bim_b37.awk:  Awk script to remove regions of high-LD from LD-pruned files. Original script from M.Weale, adapted using Ensembl.
 
-manhattan_v1.R:  Mike Weale's Manhattan plot script
+manhattan_v2.R:  Mike Weale's Manhattan plot script
 
 qq_plot_v6.R:  Mike Weale's QQ-plot script
 
