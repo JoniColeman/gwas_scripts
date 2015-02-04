@@ -1,7 +1,14 @@
+
+
 # gwas_scripts
 Codebook from my GWAS cookbook
 
-AddChromosomeNumber.sh:  Post-imputation clean-up script to add chromosome number to by-chromosome .impute2 files
+**AddChromosomeNumber.sh:**  Post-imputation clean-up script to add chromosome number to by-chromosome .impute2 files
+
+#### Usage: AddChromosomeNumber.sh
+```{bash}
+AddChromosomeNumber.sh <OPTIONS>
+```
 
 DropDuplicatedSNPs.sh:  Post-imputation QC script to remove duplicated positions in the post-imputation file (which are usually indels or multiallelic variants)
 
