@@ -256,6 +256,8 @@ Thank you to the following people for their advice and input on the contents of 
   * Steve Newhouse
   * Amos Folarin
   * Richard Dobson
+  * Cass Johnston
+  * Hamel Patel
   * Jack Euesden
   * Jemma Walker
   * Niamh Mullins
