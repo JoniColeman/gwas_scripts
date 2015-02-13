@@ -1,4 +1,4 @@
-```{bash}
+#Remove SNPs with completeness < 90%
 
 ./plink2 \
 --bfile dataname_common \
@@ -45,5 +45,3 @@
 --mind 0.01 \
 --make-bed \
 --out dataname_filtered
-
-```
