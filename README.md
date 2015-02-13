@@ -17,6 +17,14 @@
 ## Quality Control
 
 
+#### Iterative_Missingness.sh:  Remove SNPs missing in more than 10% of samples, then samples missing more than 10% of SNPs, then repeat for 5% and 1%.
+
+**Usage: Iterative_Missingness.sh**
+```{bash}
+Iterative_Missingness.sh 
+```
+
+
 #### highLDregions4bim_b37.awk:  Awk script to remove regions of high-LD from LD-pruned files. Original script from M.Weale, adapted using Ensembl.
 
 **Usage: highLDregions4bim_b37.awk**
