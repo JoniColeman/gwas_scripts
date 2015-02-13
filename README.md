@@ -168,9 +168,18 @@ DropDuplicatedSNPs.sh
 
 #### Relabel_rs.sh: Relabel imputed SNPs with an rs id with the rs id only
 
-**Usage: DropDuplicatedSNPs.sh**
+**Usage: Relabel_rs.sh**
 ```{bash}
 Relabel_rs.sh
+```
+
+
+#### DropDuplicatedPositions.sh:	Some rs IDs are imperfectly mapped, resulting in duplications with imputed IDs, so remove these accidental genotyped duplicates.
+
+
+**Usage: DropDuplicatedPositions.sh**
+```{bash}
+DropDuplicatedPositions.sh
 ```
 
 
