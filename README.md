@@ -41,6 +41,14 @@ R --file=IndividualIBD.R
 ```
 
 
+#### parfile.par:  Provide parameters to the Convertf programme from the EIGENSOFT suite, to convert files from PLNIK format to EIGENSOFT format. 
+
+**Usage: parfile.par**
+```{bash}
+convertf -p parfile.par
+```
+
+
 #### PC-VS-OUTCOME_IN_R_FULL.R:  Regress 100 PCs step-wise on outcome, print full results of each regression to file
 
 **Usage: PC-VS-OUTCOME_IN_R_FULL.R**
