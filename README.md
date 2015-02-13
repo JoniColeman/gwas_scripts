@@ -1,8 +1,11 @@
 
 
 # gwas_scripts
-###### Codebook from my GWAS cookbook, version 0.1
+###### Codebook from my GWAS cookbook (Coleman et al, In Preparation), version 0.1
 ##### Please address questions, comments and improvements to Joni Coleman, jonathan[dot]coleman[at]kcl[dot]ac[dot]uk
+
+
+**The scripts in this repo are referenced in the publication referenced above, which provides a straight-forward guide to the quality control, imputation and analysis of genome-wide genotype data. Scripts can be tested using the toy PLINK dataset kindly provided by Shaun Purcell on the PLINK 1.07 website: [example.zip](http://pngu.mgh.harvard.edu/~purcell/plink/dist/example.zip).
 
 
 # Contents
