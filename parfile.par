@@ -1,0 +1,7 @@
+genotypename: dataname_LD_IBD.bed
+snpname: dataname_LD_IBD.bim
+indivname: dataname_LD_IBD.fam
+outputformat: EIGENSTRAT
+genotypeoutname: dataname_pop_strat.eigenstratgeno
+snpoutname: dataname_pop_strat.snp
+indivoutname: dataname_pop_strat.ind
