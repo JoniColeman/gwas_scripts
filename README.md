@@ -166,6 +166,14 @@ DropDuplicatedSNPs.sh
 ```
 
 
+#### Relabel_rs.sh: Relabel imputed SNPs with an rs id with the rs id only
+
+**Usage: DropDuplicatedSNPs.sh**
+```{bash}
+Relabel_rs.sh
+```
+
+
 ## Association testing
 
 
