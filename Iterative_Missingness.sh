@@ -1,4 +1,4 @@
-```bash
+```{bash}
 
 ./plink2 \
 --bfile dataname_common \
