@@ -261,3 +261,8 @@ Thank you to the following people for their advice and input on the contents of 
   * Jack Euesden
   * Jemma Walker
   * Niamh Mullins
+  * Cathryn Lewis
+  * Paul O'Reilly
+  * Mike Weale
+
+In addition, thank you to the authors of the resources listed above, and the genetics community for their comments.
