@@ -172,48 +172,79 @@ sh ./Iterative_Missingness.sh 90 95 99
 
 #####Review call rates to ensure all missing SNPs and individuals have been dropped
 
-```{PLINK}`
+Generate files for individual call rates and variant vall rates.
+
+```{PLINK}
 $plink \
 --bfile $root_filtered \
 --missing \
 --out $root_filtered_missing
 ```
 
-b.	sort -k 5 -gr $root_filtered_missing.lmiss | head
-i.	Check no variants above missingness threshold remain in column 5 (proportion missing)
-c.	sort -k 6 -gr $root_filtered_missing.lmiss | head
-i.	Check no individuals above missingness threshold remain in column 6 (proportion missing)
-Hardy-Weinberg
-10.	** Assess SNPs for deviation from Hardy-Weinberg Equilibrium **
-a.	$plink \ 
+Examine the lowest call rates for variants: check no variants above threshold remain in column 5 (proportion missing)
+
+```{UNIX}
+sort -k 5 -gr $root_filtered_missing.imiss | head
+```
+Examine the lowest call rates for individualss: check no individuals above threshold remain in column 6 (proportion missing)
+
+```{UNIX}
+sort -k 6 -gr $root_filtered_missing.lmiss | head
+```
+
+#####Assess SNPs for deviation from Hardy-Weinberg Equilibrium
+
+--hardy calculates HWE test p-values
+
+```{PLINK}
+$plink \ 
 --bfile $root_filtered \
 --hardy \
 --out $root_hw_p_values
-i.	If desired, remove deviant SNPs past a given threshold (p<1x10-5 below)
-b.	$plink \
+```
+
+--hwe removes deviant SNPs past a given threshold (p<1x10-5 below). NB: in case-control datasets, the default behaviour of hwe is to work on controls only
+
+```{PLINK}
+$plink \
 --bfile $root_filtered \
 --hwe 0.00001 \
 --make-bed \
 --out  $root_hw_dropped
-i.	In case-control datasets, the default behaviour of hwe is to work on controls only
- 
-Prune for LD 
-11.	** Prune data file for linkage disequilibrium – below a window of 1500 variants is used, with a shift of 150 variants between windows, and an r2 cut-off of 0.2 **
-a.	$plink \
+```
+
+#####Prune data file for linkage disequilibrium 
+
+Using a window of 1500 variants and a shift of 150 variants between windows, with an r2 cut-off of 0.2
+
+```{PLINK}
+$plink \
 --bfile $root_hw_dropped \
 --indep-pairwise 1500 150 0.2 \
 --out $root_LD_one
-i.	Extract pruned-in SNPs 
-b.	$plink \
+```
+
+Extract pruned-in SNPs 
+
+```{PLINK}
+$plink \
 --bfile $root_hw_dropped \
 --extract $root_LD_one.prune.in \
 --make-bed \
 --out $root_LD_two
-ii.	Generate file lists of SNPs from high-LD regions and non-autosomal regions to exclude from the pruned file (https://sites.google.com/site/mikeweale)
-c.	awk –f highLDregions4bim_b37.awk $root_LD_two.bim > highLDexcludes
-d.	awk '($1 < 1) || ($1 > 22) {print $2}' $root_LD_two.bim > autosomeexcludes
-e.	cat highLDexcludes autosomeexcludes > highLD_and_autosomal_excludes  
- 
+```
+
+Exclude  high-LD and non-autosomal regions from the pruned file see [Mike Weake's website] (https://sites.google.com/site/mikeweale)
+
+```{AWK}
+awk –f highLDregions4bim_b37.awk $root_LD_two.bim > highLDexcludes
+```
+```{AWK}
+awk '($1 < 1) || ($1 > 22) {print $2}' $root_LD_two.bim > autosomeexcludes
+```
+```{bash}
+cat highLDexcludes autosomeexcludes > highLD_and_autosomal_excludes  
+``` 
 12.	Exclude high-LD regions and non-autosomal regions 
 a.	$plink \
 --bfile $root_LD_two \
