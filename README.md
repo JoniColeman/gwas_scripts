@@ -170,11 +170,15 @@ sh ./Iterative_Missingness.sh 90 95 99
 ```
 
 
-9.	Review missingness to ensure all missing SNPs and individuals have been dropped
-a.	$plink \
+#####Review call rates to ensure all missing SNPs and individuals have been dropped
+
+```{PLINK}`
+$plink \
 --bfile $root_filtered \
 --missing \
 --out $root_filtered_missing
+```
+
 b.	sort -k 5 -gr $root_filtered_missing.lmiss | head
 i.	Check no variants above missingness threshold remain in column 5 (proportion missing)
 c.	sort -k 6 -gr $root_filtered_missing.lmiss | head
@@ -761,7 +765,7 @@ MergeImputedChunks.sh
 
 **Usage: AddChromosomeNumber.sh**
 ```{bash}
-AddChromosomeNumber.sh <OPTIONS>
+AddChromosomeNumber.sh /path/to/results_directory
 ```
 
 
