@@ -18,7 +18,7 @@ Within this protocol, the following software is used:
 •	[IMPUTE] (https://mathgen.stats.ox.ac.uk/impute/impute_v2.html)
 
 
-The protocol runs in a UNIX environment, and makes use of some of the basic software of the UNIX operating system. It should run on a Mac, but not in Windows. Most sections are designed to be usable simply by pasting into the command line – variables are set when each command is run, and commands that require variables to be set are bold.
+The protocol runs in a UNIX environment, and makes use of some of the basic software of the UNIX operating system. It should run on a Mac, but not in Windows. Most sections are designed to be usable simply by pasting into the command line – variables are set when each command is run, and should be straight-forward to modify.
 
 #Procedure#
 
@@ -155,7 +155,7 @@ $plink \
 --out $root_common
 ```
 
-This assumes no updates were made, otherwise modify the --bfile command to point to that file (e.g. $root_updated_names)
+This assumes no updates were made, otherwise modify the --bfile command to point to that file (e.g. $root_updated_names).
 
 
 #####Filter for call rate iteratively 
@@ -163,7 +163,7 @@ This assumes no updates were made, otherwise modify the --bfile command to point
 ```{bash}
 sh ./Iterative_Missingness.sh [begin] [intermediate] [final] 
 ```
-Removes SNPs then samples at increasingly high cut-offs. E.g. To remove at 90%, 95% and 99%:
+_Removes SNPs then samples at increasingly high cut-offs. E.g. To remove at 90%, 95% and 99%:_
 
 ```{bash}
 sh ./Iterative_Missingness.sh 90 95 99 
@@ -172,7 +172,7 @@ sh ./Iterative_Missingness.sh 90 95 99
 
 #####Review call rates to ensure all missing SNPs and individuals have been dropped
 
-Generate files for individual call rates and variant vall rates.
+_Generate files for individual call rates and variant vall rates._
 
 ```{PLINK}
 $plink \
@@ -181,20 +181,24 @@ $plink \
 --out $root_filtered_missing
 ```
 
-Examine the lowest call rates for variants: check no variants above threshold remain in column 5 (proportion missing)
+_Examine the lowest call rates for variants:_ 
 
 ```{UNIX}
 sort -k 5 -gr $root_filtered_missing.imiss | head
 ```
-Examine the lowest call rates for individualss: check no individuals above threshold remain in column 6 (proportion missing)
+
+Check no variants above threshold remain in column 5 (proportion missing).
+
+_Examine the lowest call rates for individuals:_ 
 
 ```{UNIX}
 sort -k 6 -gr $root_filtered_missing.lmiss | head
 ```
+Check no individuals above threshold remain in column 6 (proportion missing).
 
 #####Assess SNPs for deviation from Hardy-Weinberg Equilibrium
 
---hardy calculates HWE test p-values
+_--hardy calculates HWE test p-values:_
 
 ```{PLINK}
 $plink \ 
@@ -203,7 +207,7 @@ $plink \
 --out $root_hw_p_values
 ```
 
---hwe removes deviant SNPs past a given threshold (p<1x10-5 below). NB: in case-control datasets, the default behaviour of hwe is to work on controls only
+_--hwe removes deviant SNPs past a given threshold, 1x10^-5 below:_ 
 
 ```{PLINK}
 $plink \
@@ -212,10 +216,11 @@ $plink \
 --make-bed \
 --out  $root_hw_dropped
 ```
+NB: in case-control datasets, the default behaviour of hwe is to work on controls only
 
 #####Prune data file for linkage disequilibrium 
 
-Using a window of 1500 variants and a shift of 150 variants between windows, with an r2 cut-off of 0.2
+_Using a window of 1500 variants and a shift of 150 variants between windows, with an r2 cut-off of 0.2:_
 
 ```{PLINK}
 $plink \
@@ -224,7 +229,7 @@ $plink \
 --out $root_LD_one
 ```
 
-Extract pruned-in SNPs 
+_Extract pruned-in SNPs_
 
 ```{PLINK}
 $plink \
@@ -234,7 +239,7 @@ $plink \
 --out $root_LD_two
 ```
 
-Exclude  high-LD and non-autosomal regions from the pruned file see [Mike Weake's website] (https://sites.google.com/site/mikeweale)
+_Exclude  high-LD and non-autosomal regions from the pruned file see [Mike Weake's website] (https://sites.google.com/site/mikeweale)_
 
 ```{AWK}
 awk –f highLDregions4bim_b37.awk $root_LD_two.bim > highLDexcludes
@@ -245,75 +250,117 @@ awk '($1 < 1) || ($1 > 22) {print $2}' $root_LD_two.bim > autosomeexcludes
 ```{bash}
 cat highLDexcludes autosomeexcludes > highLD_and_autosomal_excludes  
 ``` 
-12.	Exclude high-LD regions and non-autosomal regions 
-a.	$plink \
+```{PLINK}
+$plink \
 --bfile $root_LD_two \
 --exclude highLD_and_autosomal_excludes \
 --make-bed \
 --out $root_LD_three
-13.	** Add phenotype to differentiate groups (e.g. case/control status, site of collection – called "Site" below) as a phenotype **
-a.	$plink \
+```
+
+#####Add phenotype to differentiate groups
+
+_E.g. Add site of collection ("Site") from an external pheotype file:_
+
+```{PLINK}
+$plink \
 --bfile $root_LD_three \
 --pheno $pheno \
 --pheno-name Site \
  --make-bed \
 --out  $root_LD_four
- 
-Sex check
-14.	Using the LD-stripped file before filtering out non-autosomal regions, ensure there is a separate XY region for the pseudoautosomal region on X. Requires entry of genome build, below this is hg37 ("b37")
-a.	$plink \
+```
+
+#####Compare genotypic and phenotypic gender
+
+_Ensure there is a separate XY region for the pseudoautosomal region on X:_ 
+
+Most chips have the pseudoautosomal region mapped separately already.
+Requires entry of genome build, below this is hg37 ("b37").
+
+```{PLINK}
+$plink \
 --bfile $root_LD_two \
 --split-x b37 \
 --make-bed \
 --out $root_LD_split
-b.	Most chips have the pseudoautosomal region mapped separately already
-15.	Compare phenotypic gender to X chromosome heterogeneity and Y chromosome SNP count
-a.	$plink \
+```
+
+_Compare phenotypic gender to X chromosome heterogeneity and Y chromosome SNP count:_
+
+```{PLINK}
+$plink \
 --bfile $root_LD_split \
 --check-sex ycount \
 --out $root_sex_check
-b.	IDs identified as discordant (not the phenotypic gender) or for which the heterogeneity of the F statistic is between 0.2 and 0.8 (not assigned a gender by PLINK), should be reviewed with the collection site where possible. This command also takes into account the number of Y chromosome SNPs present, to counteract the unreliable nature of the F statistic in assigning female gender. The number of Y SNPs with calls in females can be set as part of ycount, and will depend on the recalling method used and sample size. An additional check can be made by assessing whole-genome heterogeneity for all samples (see below) at this point – discordant gender may be the result of unusual heterogeneity
-c.	** Discordant IDs that cannot be resolved should be removed from the bed files. This command assumes a PLINK-format file of IDs for discordant individuals called "discordant_individuals.txt" **
-i.	$plink \
+```
+
+IDs identified as discordant (not the phenotypic gender) or for which F is between 0.2 and 0.8 (not assigned a gender by PLINK), should be reviewed with the collection site where possible. This command also takes into account the number of Y chromosome SNPs present, to counteract the unreliable nature of the F statistic in assigning female gender. The number of Y SNPs with calls in females can be set as part of ycount, and will depend on the recalling method used and sample size. An additional check can be made by assessing whole-genome heterogeneity for all samples (see below) at this point – discordant gender may be the result of unusual heterogeneity
+
+_Remove discordant IDs that cannot be resolved:_ 
+
+This command assumes a PLINK-format file of IDs for discordant individuals called "discordant_individuals.txt".
+
+```{PLINK}
+$plink \
 --bfile $root_LD_four \
 --remove discordant_individuals.txt \
 --make-bed \
 --out $root_LD_five
-ii.	$plink \
+	
+$plink \
 --bfile $root_hw_dropped \
 --remove discordant_individuals.txt \
 --make-bed \
 --out $root_sexcheck_cleaned
- 
-Pairwise identical-by-descent (IBD) check
-16.	Pairwise IBD
-a.	$plink \
+```
+
+#####Pairwise identical-by-descent (IBD) check
+
+```{PLINK}
+$plink \
 --bfile $root_LD_five \
 --genome \
 --make-bed \
 --out $root_IBD
-17.	** Remove one sample from each pair with pi-hat (% identical-by-descent) above threshold(below, this is  > 0.1875) **
-a.	awk '$10 >= 0.1875 {print $1, $2}' $root_IBD.genome > $root_IBD_outliers.txt 
-a.	$plink \
+```
+
+_Remove one sample from each pair with pi-hat (% IBD) above threshold (0.1875 below):_
+
+```{AWK}
+awk '$10 >= 0.1875 {print $1, $2}' $root_IBD.genome > $root_IBD_outliers.txt 
+```
+
+```{PLINK}
+$plink \
 --bfile $root_IBD \
 --remove $root_IBD_outliers.txt \
 --make-bed \
 --out $root_no_close_relatives
-18.	Calculate average IBD per individual using R, output outliers (here uses 6SD)
-a.	./R --file=IndividualIBD.R
- 
-19.	Exclude outliers from both LD-stripped and all SNP .bed files
-b.	$plink \
+```
+
+_Calculate average IBD per individual using R, output outliers (defined as more than ***sigma*** standard deviations above the mean, as provided by the user):_
+
+```{R}
+./R --file=IndividualIBD.R [sigma]
+```
+
+Exclude outliers from both LD-stripped and all SNP binary files
+
+```{PLINK}
+$plink \
 --bfile $root_LD_five \
 --remove $root_IBD_INDIV_outliers.txt \
 --make-bed
 --out $root_LD_IBD
-c.	$plink \
+
+$plink \
 --bfile $root_sexcheck_cleaned \
 --remove $root_IBD_INDIV_outliers.txt \
 --make-bed
 --out $root_IBD_cleaned
- 
+```
+
 Population stratification by principal component analysis in EIGENSOFT
 Consult [https://sites.google.com/site/mikeweale/software/eigensoftplus] [http://computing.bio.cam.ac.uk/local/doc/<programme name>.txt], [http://genetsim.org/class/EIG3.0/POPGEN/README.html]
 20.	Using LD-pruned file from above (with IBD exclusions),  run EIGENSOFT
