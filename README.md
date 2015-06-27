@@ -361,14 +361,26 @@ $plink \
 --out $root_IBD_cleaned
 ```
 
-Population stratification by principal component analysis in EIGENSOFT
+#####Population stratification by principal component analysis in EIGENSOFT
+
 Consult [https://sites.google.com/site/mikeweale/software/eigensoftplus] [http://computing.bio.cam.ac.uk/local/doc/<programme name>.txt], [http://genetsim.org/class/EIG3.0/POPGEN/README.html]
-20.	Using LD-pruned file from above (with IBD exclusions),  run EIGENSOFT
-21.	Convert files to EIGENSOFT format – Convertf
-a.	Requires par file to convert from packedped format to eigenstrat format
-i.	convertf -p parfile.par
-22.	Run SmartPCA on files with 100 principal components, removing no outliers (-m 0)
-a.	smartpca.perl \
+
+_Run EIGENSOFT using LD-pruned binary_
+
+_Convert files to EIGENSOFT format using CONVERTF_
+
+Requires par file to convert from packedped format to eigenstrat format
+
+```{perl}
+convertf -p parfile.par
+```
+
+_Run SmartPCA, removing no outliers_ 
+
+Produces 100 PCs
+
+```{perl}
+smartpca.perl \
 -i $root_pop_strat.eigenstratgeno \
 -a $root_pop_strat.snp \
 -b $root_pop_strat.ind \
@@ -380,36 +392,80 @@ a.	smartpca.perl \
 -t 100 \
 -k 100 \
 -s 6 \
-i.	Note that the order of the inputs is important.
-ii.	-i  is the genotype file
-iii.	-a is the SNP names
-iv.	-b is the individual names
-v.	-o is the output eigenvectors ( $root_pop_strat.pca.evec)
-vi.	-p plots the output file. This is only activated if gnuplot is installed, but is a necessary inclusion for smartpca to run. If gnuplot is not installed, this does not affect the running of smartpca. If gnuplot is installed, this produces a plot of the first component on the second.
-vii.	-e is the output eigenvalues
-viii.	-l is the log, including a list of individuals defined as outliers. 
-ix.	-m sets the number of outlier removal iterations. This is initially set to 0, so no outliers are removed.
-x.	-t sets the number of components from which outliers should be removed. If -m is 0, this value has no effect.
-xi.	-k is the number of components to be output
-xii.	-s defines the minimum number of standard deviations from the mean of each component an individual must be to be counted as an outlier.
-23.	Remove leading tab from $root_pop_strat.pca.evec to allow for import into R
-a.	sed -i 's/^[ \t]*//' $root_pop_strat.pca.evec
- 
-24.	Use PCs  from $root_pop_strat.pca.evec to calculate association between PCs and outcome measure in R.
-a.	Short version:
-i.	./R --file=PC--VS--OUTCOME_IN_R_SHORT.R
-1.	Outputs the variance explained by each component and its significance when added to a model including the previous components.
-b.	Long version: 
-ii.	./R --file= PC--VS--OUTCOME_IN_R_FULL.R 
-1.	Outputs the full results of the linear model, adding each component in turn.
-c.	Both scripts require the same IDs to be in $root.pca.evec and external_pheno.txt, and look at 100 PCs by default. 
-25.	** Run SmartPCA again, setting –m 5 and –t x (where x is the number of PCs significantly associated with the outcome measure) **
-a.	As above, but change root names to pop_strat_outliers
-26.	Plot principal components in R
-a.	Advisable to plot before outlier exclusion and after to allow visual inspection of which samples are dropped
-b.	Plot first component against second in R and colour by phenotype 
-iii.	./R --file=PlotPCs.R
-c.	This script can be modified to plot any of the first 100 components against each other (http://docs.ggplot2.org/current/)
+```
+
+Note that the order of the inputs is important.
+
+Inputs explained:
+
+  -i  is the genotype file
+  -a is the SNP names
+  -b is the individual names
+  -o is the output eigenvectors ( $root_pop_strat.pca.evec)
+  -p plots the output file. This is only activated if gnuplot is installed, but is a necessary inclusion for smartpca to run. If gnuplot is not installed, this does not affect the running of smartpca. If gnuplot is installed, this produces a plot of the first component on the second.
+  -e is the output eigenvalues
+  -l is the log, including a list of individuals defined as outliers. 
+  -m sets the number of outlier removal iterations. This is initially set to 0, so no outliers are removed.
+  -t sets the number of components from which outliers should be removed. If -m is 0, this value has no effect.
+  -k is the number of components to be output
+  -s defines the minimum number of standard deviations from the mean of each component an individual must be to be counted as an outlier.
+  
+_Minor edit to allow import into R_
+
+Remove leading tab. 
+
+```{sed}
+sed -i 's/^[ \t]*//' $root_pop_strat.pca.evec
+```
+
+_Calculate association between PCs and outcome measure in R_
+
+Both scripts require the same IDs to be in $root.pca.evec and $pheno, and look at 100 PCs by default. 
+
+Short version (outputs the variance explained by each component and its significance when added to a model including the previous components):
+
+```{R}	
+./R --file=PC--VS--OUTCOME_IN_R_SHORT.R
+```
+
+Long version (outputs the full results of the linear model, adding each component in turn):
+
+```{R}
+./R --file= PC--VS--OUTCOME_IN_R_FULL.R 
+```
+
+_Run SmartPCA again to remove outliers_ 
+
+Run as above ("Run SmartPCA, removing no outliers"), but change $root suffix to pop_strat_outliers.
+Set –m 5 and –t x (where ***x*** is the number of PCs significantly associated with the outcome measure) 
+
+```{perl}
+smartpca.perl \
+-i $root_pop_strat_outliers.eigenstratgeno \
+-a $root_pop_strat_outliers.snp \
+-b $root_pop_strat_outliers.ind \
+-o $root_pop_strat_outliers.pca \
+-p $root_pop_strat_outliers.plot \
+-e $root_pop_strat_outliers.eval \
+-l $root_pop_strat_outliers_smartpca.log \
+-m 5 \
+-t ***x*** \
+-k 100 \
+-s 6 \
+```
+
+_Plot principal components in R_
+
+Plot before and after outlier exclusion to allow visual inspection of which samples are dropped
+
+Plot first component against second in R and colour by phenotype
+
+```{R}
+./R --file=PlotPCs.R PC1 PC2
+```
+
+This script can be modified to plot any of the first 100 components against each other by changing PC1 and PC2 above. The design of the plot is extremely modifiable - see [http://docs.ggplot2.org/current/].
+
 27.	Extract outliers from smartpca log file
 a.	sh ./ExtractAncestryOutliers.sh
 28.	Exclude outliers 
