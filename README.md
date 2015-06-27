@@ -342,7 +342,7 @@ $plink \
 _Calculate average IBD per individual using R, output outliers (defined as more than ***sigma*** standard deviations above the mean, as provided by the user):_
 
 ```{R}
-./R --file=IndividualIBD.R [sigma]
+./R --file=IndividualIBD.R $root [sigma]
 ```
 
 Exclude outliers from both LD-stripped and all SNP binary files
