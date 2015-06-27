@@ -425,13 +425,13 @@ Both scripts require the same IDs to be in $root.pca.evec and $pheno, and look a
 Short version (outputs the variance explained by each component and its significance when added to a model including the previous components):
 
 ```{R}	
-./R --file=PC--VS--OUTCOME_IN_R_SHORT.R
+./R --file=PC--VS--OUTCOME_IN_R_SHORT.R $root_pop_strat
 ```
 
 Long version (outputs the full results of the linear model, adding each component in turn):
 
 ```{R}
-./R --file= PC--VS--OUTCOME_IN_R_FULL.R 
+./R --file= PC--VS--OUTCOME_IN_R_FULL.R $root_pop_strat
 ```
 
 _Run SmartPCA again to remove outliers_ 
@@ -466,22 +466,59 @@ Plot first component against second in R and colour by phenotype
 
 This script can be modified to plot any of the first 100 components against each other by changing PC1 and PC2 above. The design of the plot is extremely modifiable - see [http://docs.ggplot2.org/current/].
 
-27.	Extract outliers from smartpca log file
-a.	sh ./ExtractAncestryOutliers.sh
-28.	Exclude outliers 
-a.	$plink \
+_Extract outliers_
+
+```{bash}
+sh ./ExtractAncestryOutliers.sh
+```
+
+```{PLINK}
+$plink \
 --bfile $root_LD_IBD \
 --remove $root_pop_strat_outliers.outliers \
 --make-bed \
 --out $root_LD_pop_strat
-b.	$plink \
+
+$plink \
 --bfile $root_IBD_cleaned \
 --remove $root_pop_strat_outliers.outliers \
 --make-bed \
 --out $root_pop_strat
-29.	** Re-run steps 2-4 to assess which components to include as covariates in the final analysis ** 
-a.	Change root to pop_strat_includes
-b.	Note the number of components that are significantly associated with outcome for inclusion as covariates in the final analysis, or add PCs in turn until inflation falls to an accepted level (lambda ≈ 1).
+```
+
+_Re-run to assess which components to include as covariates in the final analysis_
+
+Run ConvertF
+
+```{perl}
+convertf -p parfile_covariates.par
+```
+
+Run SmartPCA:
+
+```{perl}
+smartpca.perl \
+-i $root_pop_strat_final.eigenstratgeno \
+-a $root_pop_strat_final.snp \
+-b $root_pop_strat_final.ind \
+-o $root_pop_strat_final.pca \
+-p $root_pop_strat_final.plot \
+-e $root_pop_strat_final.eval \
+-l $root_pop_strat_final_smartpca.log \
+-m 0 \
+-t 100 \
+-k 100 \
+-s 6 \
+```
+
+Calculate association (short version):
+
+```{R}	
+./R --file=PC--VS--OUTCOME_IN_R_SHORT.R $root_pop_strat_final
+```
+
+Include components significantly associated with outcome as covariates in the final analysis, or add PCs in turn until inflation falls to an accepted level (lambda ≈ 1).
+
 30.	As an optional additional procedure, individuals can be plotted on components drawn from the HapMap reference populations to assess likely ancestry groupings. Details of this procedure can be found at http://openwetware.org/wiki/User:Timothee_Flutre/Notebook/Postdoc/2012/01/22
 a.	Need to manually extract sample names and use these as an includes file at this section:
 for pop in {CEU,CHB,JPT,YRI}; do echo ${pop}; \
