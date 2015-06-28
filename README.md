@@ -365,7 +365,7 @@ $plink \
 
 Consult [https://sites.google.com/site/mikeweale/software/eigensoftplus] [http://computing.bio.cam.ac.uk/local/doc/<programme name>.txt], [http://genetsim.org/class/EIG3.0/POPGEN/README.html]
 
-_Run EIGENSOFT using LD-pruned binary_
+___Run EIGENSOFT using LD-pruned binary___
 
 _Convert files to EIGENSOFT format using CONVERTF_
 
