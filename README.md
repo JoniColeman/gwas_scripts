@@ -239,7 +239,7 @@ $plink \
 --out $root_LD_two
 ```
 
-_Exclude  high-LD and non-autosomal regions from the pruned file see [Mike Weale's website] (https://sites.google.com/site/mikeweale)_
+_Exclude  high-LD and non-autosomal regions from the pruned file (see [Mike Weale's website] (https://sites.google.com/site/mikeweale))_
 
 ```{AWK}
 awk –f highLDregions4bim_b37.awk $root_LD_two.bim > highLDexcludes
