@@ -708,7 +708,7 @@ cat results-directory/*_New_filtered.impute2 > \
 /results-directory/$root_whole_genome_filtered.impute2
 ```
 
-__ Remove duplicate SNPs from .impute2 file__
+__Remove duplicate SNPs from .impute2 file__
 
 ```{AWK}
 awk '{print $2}' $root_whole_genome_filtered.impute2 | \
