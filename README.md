@@ -422,13 +422,13 @@ _Calculate association between PCs and outcome measure in R_
 
 Both scripts require the same IDs to be in $root.pca.evec and $pheno, and look at 100 PCs by default. 
 
-**Short version (outputs the variance explained by each component and its significance when added to a model including the previous components):**
+***Short version (outputs the variance explained by each component and its significance when added to a model including the previous components):***
 
 ```{R}	
 ./R --file=PC--VS--OUTCOME_IN_R_SHORT.R $root_pop_strat
 ```
 
-**Long version (outputs the full results of the linear model, adding each component in turn):**
+***Long version (outputs the full results of the linear model, adding each component in turn):***
 
 ```{R}
 ./R --file= PC--VS--OUTCOME_IN_R_FULL.R $root_pop_strat
