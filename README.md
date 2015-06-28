@@ -398,17 +398,17 @@ Note that the order of the inputs is important.
 
 Inputs explained:
 
-  -i  is the genotype file
-  -a is the SNP names
-  -b is the individual names
-  -o is the output eigenvectors ( $root_pop_strat.pca.evec)
-  -p plots the output file. This is only activated if gnuplot is installed, but is a necessary inclusion for smartpca to run. If gnuplot is not installed, this does not affect the running of smartpca. If gnuplot is installed, this produces a plot of the first component on the second.
-  -e is the output eigenvalues
-  -l is the log, including a list of individuals defined as outliers. 
-  -m sets the number of outlier removal iterations. This is initially set to 0, so no outliers are removed.
-  -t sets the number of components from which outliers should be removed. If -m is 0, this value has no effect.
-  -k is the number of components to be output
-  -s defines the minimum number of standard deviations from the mean of each component an individual must be to be counted as an outlier.
+    -i  is the genotype file
+    -a is the SNP names
+    -b is the individual names
+    -o is the output eigenvectors ( $root_pop_strat.pca.evec)
+    -p plots the output file. This is only activated if gnuplot is installed, but is a necessary inclusion for smartpca to run. If gnuplot is not installed, this does not affect the running of smartpca. If gnuplot is installed, this produces a plot of the first component on the second.
+    -e is the output eigenvalues
+    -l is the log, including a list of individuals defined as outliers. 
+    -m sets the number of outlier removal iterations. This is initially set to 0, so no outliers are removed.
+    -t sets the number of components from which outliers should be removed. If -m is 0, this value has no effect.
+    -k is the number of components to be output
+    -s defines the minimum number of standard deviations from the mean of each component an individual must be to be counted as an outlier.
   
 _Minor edit to allow import into R_
 
@@ -422,13 +422,13 @@ _Calculate association between PCs and outcome measure in R_
 
 Both scripts require the same IDs to be in $root.pca.evec and $pheno, and look at 100 PCs by default. 
 
-Short version (outputs the variance explained by each component and its significance when added to a model including the previous components):
+**Short version (outputs the variance explained by each component and its significance when added to a model including the previous components):**
 
 ```{R}	
 ./R --file=PC--VS--OUTCOME_IN_R_SHORT.R $root_pop_strat
 ```
 
-Long version (outputs the full results of the linear model, adding each component in turn):
+**Long version (outputs the full results of the linear model, adding each component in turn):**
 
 ```{R}
 ./R --file= PC--VS--OUTCOME_IN_R_FULL.R $root_pop_strat
@@ -532,16 +532,16 @@ sh ./MakeKeepIds.sh
 
 _Use keepids.txt at this section:_
 
-  for pop in {CEU,CHB,JPT,YRI}; do echo ${pop}; \
-  hapmap2impute.py -i genotypes_CHR_${pop}_r28_nr.b36_fwd.txt.gz -n keepids.txt -o genotypes_hapmap_r28_b37_${pop}.impute.gz -b snps_hapmap_r28_nr_b37.bed.gz -s list_snps_redundant.txt; done
-  zcat genotypes_hapmap_r28_b37_CEU.impute.gz | wc -l
-  3907899
-  zcat genotypes_hapmap_r28_b37_CHB.impute.gz | wc -l
-  3933013
-  zcat genotypes_hapmap_r28_b37_JPT.impute.gz | wc -l
-  3931282
-  zcat genotypes_hapmap_r28_b37_YRI.impute.gz | wc -l
-  3862842
+    for pop in {CEU,CHB,JPT,YRI}; do echo ${pop}; \
+    hapmap2impute.py -i genotypes_CHR_${pop}_r28_nr.b36_fwd.txt.gz -n keepids.txt -o genotypes_hapmap_r28_b37_${pop}.impute.gz -b snps_hapmap_r28_nr_b37.bed.gz -s list_snps_redundant.txt; done
+    zcat genotypes_hapmap_r28_b37_CEU.impute.gz | wc -l
+    3907899
+    zcat genotypes_hapmap_r28_b37_CHB.impute.gz | wc -l
+    3933013
+    zcat genotypes_hapmap_r28_b37_JPT.impute.gz | wc -l
+    3931282
+    zcat genotypes_hapmap_r28_b37_YRI.impute.gz | wc -l
+    3862842
 
 More populations now exist than those listed in Flutre’s script; these can be obtained in the same manner.	
  
@@ -621,21 +621,21 @@ This makes two sets of files:
 
 Chunks_chr[1-23].txt
 
-  30000001 3.5e+07 875 
-  35000001 4e+07 500
-  40000001 4.5e+07 85
-  45000001 5e+07 424
-  50000001 5.5e+07 693
+    30000001 3.5e+07 875 
+    35000001 4e+07 500
+    40000001 4.5e+07 85
+    45000001 5e+07 424
+    50000001 5.5e+07 693
 
 These files list the base positions of the edges of each chromosome chunk and the number of SNPs in each chunk.
 Consult this file and merge chunks with few SNPs (e.g. less than 100) with neighbouring chunks.
 
 analysis_chunks_5Mb_chr[1-23].txt
 
-  30000001 3.5e+07
-  35000001 4e+07
-  40000001 5e+07
-  50000001 5.5e+07
+    30000001 3.5e+07
+    35000001 4e+07
+    40000001 5e+07
+    50000001 5.5e+07
 
 These files are the input for IMPUTE2
 
@@ -832,16 +832,17 @@ $plink \
 ```
 
 Consider coding of phenotype – may require the use of --1 as an option if coding is in 0,1 format (rather than 1,2 format)
-  --covar-number indicates which covariates to include. --covar-name can also be used for this 
-  --hide-covar hides results of association tests between phenotype and covariates
-  --parameters specifies models to include in the analysis (see www.cog-genomics.org/plink2)
-     1.	Allelic dosage additive effect (or homozygous minor dummy variable)
-     2.	Dominance deviation, if present
-     3.	--condition{-list} covariate(s), if present
-     4.	--covar covariate(s), if present
-     5.	Genotype x non-sex covariate 'interaction' terms, if present
-     6.	Sex, if present
-     7.	Sex-genotype interaction(s), if present 
+    
+         --covar-number indicates which covariates to include. --covar-name can also be used for this 
+         --hide-covar hides results of association tests between phenotype and covariates
+         --parameters specifies models to include in the analysis (see www.cog-genomics.org/plink2)
+           1.	Allelic dosage additive effect (or homozygous minor dummy variable)
+           2.	Dominance deviation, if present
+           3.	--condition{-list} covariate(s), if present
+           4.	--covar covariate(s), if present
+           5.	Genotype x non-sex covariate 'interaction' terms, if present
+           6.	Sex, if present
+           7.	Sex-genotype interaction(s), if present 
 
 _Investigate further any SNP that is highly associated with the phenotype, and exclude from analysis if justified_
 
@@ -947,26 +948,28 @@ $plink \
 --out $root_post_imputation_final_analysis_clumped
 ```
 
-  --clump-p1 is the p-value threshold below which to consider SNPs for inclusion as the reported SNP from the clump
-  --clump-p2 is the p-value threshold below which to consider SNPs for inclusion in the clump
-  --clump-r2 is the LD R2 threshold above which SNPs must be to be included in the same clump 
-  --clump-kb is the maximum distance a clump SNP can be from the reported SNP
+    --clump-p1 is the p-value threshold below which to consider SNPs for inclusion as the reported SNP from the clump
+    --clump-p2 is the p-value threshold below which to consider SNPs for inclusion in the clump
+    --clump-r2 is the LD R2 threshold above which SNPs must be to be included in the same clump 
+    --clump-kb is the maximum distance a clump SNP can be from the reported SNP
   
 The options given here will generate clumps of all SNPs in LD (above R2 = 0.25), with a maximum size of 500kb, considering all SNPs regardless of p-value  
 
 #####Annotation of Results
 
 **Download all RefSeq genes from [UCSC](https://genome.ucsc.edu/)**
+
 Go to [Table Browser](https://genome.ucsc.edu/cgi-bin/hgTables)
-1.	Pick Group: Genes and Gene Prediction Tracks
-2.	Pick Track: RefSeq Genes
-3.	Pick Table: refGene
-4.	Pick Region: genome
-5.	Pick Output Format: Selected fields…
-6.	Click Get Output
-7.	Tick Chrom, cdsStart, cdsEnd and name2
-8.	Click GetOutput
-a.	Transfer output to file GeneList.txt 
+         1.	Pick Group: Genes and Gene Prediction Tracks
+         2.	Pick Track: RefSeq Genes
+         3.	Pick Table: refGene 
+         4.	Pick Region: genome
+         5.	Pick Output Format: Selected fields…
+         6.	Click Get Output
+         7.	Tick Chrom, cdsStart, cdsEnd and name2
+         8.	Click GetOutput
+ 
+Transfer output to file GeneList.txt 
 
 _Slight reformat of gene list, then make glist_hg19_
 
