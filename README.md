@@ -425,13 +425,13 @@ Both scripts require the same IDs to be in $root.pca.evec and $pheno, and look a
 *Short version (outputs the variance explained by each component and its significance when added to a model including the previous components):*
 
 ```{R}	
-./R --file=PC--VS--OUTCOME_IN_R_SHORT.R $root.pop_strat
+./R --file=PC--VS--OUTCOME_IN_R_SHORT.R $root.pop_strat $pheno
 ```
 
 *Long version (outputs the full results of the linear model, adding each component in turn):*
 
 ```{R}
-./R --file= PC--VS--OUTCOME_IN_R_FULL.R $root.pop_strat
+./R --file= PC--VS--OUTCOME_IN_R_FULL.R $root.pop_strat $pheno
 ```
 
 _Run SmartPCA again to remove outliers_ 

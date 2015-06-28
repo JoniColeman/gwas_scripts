@@ -1,5 +1,7 @@
-PCAEVEC<-read.table("file.pca.evec",head=T)
-PHENOTYPE<-read.table("path/to/phenotypes.phe",head=T)
+root<-$1
+pheno<-$2
+PCAEVEC<-read.table(paste(root,".pca.evec",sep=""),head=T)
+PHENOTYPE<-read.table(pheno,head=T)
 PCAPHENO<-merge(PCAEVEC,PHENOTYPE)
 sink("path/to/PC_Output_Associations.txt")
 for (i in 1:100) {
