@@ -267,7 +267,7 @@ $plink \
 --bfile $root_LD_three \
 --pheno $pheno \
 --pheno-name Site \
- --make-bed \
+--make-bed \
 --out  $root_LD_four
 ```
 
