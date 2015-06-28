@@ -853,6 +853,7 @@ All association details here assume an additive model – see PLINK website to i
 #####Using GCTA for Genomic-relatedness-matrix Restricted Maximum Likelihood (GREML) and Mixed Linear Model Association (MLMA)
 
 _Make GRM_
+
 Thresholds below: MAF 1%, IBD 0.025  
 
 ```{GCTA}
@@ -960,6 +961,7 @@ The options given here will generate clumps of all SNPs in LD (above R2 = 0.25),
 *Download all RefSeq genes from [UCSC](https://genome.ucsc.edu/)*
 
 Go to [Table Browser](https://genome.ucsc.edu/cgi-bin/hgTables)
+
          1.	Pick Group: Genes and Gene Prediction Tracks
          2.	Pick Track: RefSeq Genes
          3.	Pick Table: refGene 
