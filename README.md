@@ -22,7 +22,7 @@ The protocol runs in a UNIX environment, and makes use of some of the basic soft
 
 #Procedure#
 
-######Recalling and rare-variant calling
+#####Recalling and rare-variant calling
 
 Not covered by this protocol, see http://confluence.brc.iop.kcl.ac.uk:8090/x/4AAm, which presents best-practice for recalling the raw genotype data using Illumina GenomeStudio, and https://github.com/KHP-Informatics/chip_gt, which implements and compares the results of [ZCall] (https://github.com/jigold/zCall) and [Opticall] (https://www.sanger.ac.uk/resources/software/opticall/).
 
@@ -57,7 +57,7 @@ File formats are the [PLINK file formats] (http://pngu.mgh.harvard.edu/~purcell/
 
 NB: not all of these files may be relevant to your study.
 
-######Review the PLINK binary (.bed, .bim, .fam) files from Exome-chip pipeline
+#####Review the PLINK binary (.bed, .bim, .fam) files from Exome-chip pipeline
 
 _Check individuals_
 
@@ -71,7 +71,7 @@ _Check SNPs_
 less $root.bim
 ```
 
-######Update files
+#####Update files
 
 Phenotypes, individual names, genders, or SNP alleles may be lost in preparatory steps. These can be updated using external files.
 
