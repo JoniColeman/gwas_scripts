@@ -689,7 +689,7 @@ cat results-directory/*.impute2_info > path/to/results-directory/$root_whole_gen
 
 For December 2013 release of reference data (Phase1 Integrated), there are several aspects that require clean-up - these do not appear to apply to the Phase 3 release. Steps marked * are required for the Phase1 Integrated release, but may not be needed for Phase3.
 
-* _Exomic variants are named "." It is necessary to make these unique (as chr:position)_
+/* _Exomic variants are named "." It is necessary to make these unique (as chr:position)_
 
 ```{bash}
 sh ./ReplaceDots.sh
@@ -708,7 +708,7 @@ cat results-directory/*_New_filtered.impute2 > \
 /results-directory/$root_whole_genome_filtered.impute2
 ```
 
-_* Remove duplicate SNPs from .impute2 file_
+_/* Remove duplicate SNPs from .impute2 file_
 
 ```{AWK}
 awk '{print $2}' $root_whole_genome_filtered.impute2 | \
