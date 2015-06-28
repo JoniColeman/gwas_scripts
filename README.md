@@ -449,7 +449,7 @@ smartpca.perl \
 -e $root_pop_strat_outliers.eval \
 -l $root_pop_strat_outliers_smartpca.log \
 -m 5 \
--t ***x*** \
+-t x \
 -k 100 \
 -s 6 \
 ```
@@ -519,162 +519,307 @@ Calculate association (short version):
 
 Include components significantly associated with outcome as covariates in the final analysis, or add PCs in turn until inflation falls to an accepted level (lambda ≈ 1).
 
-30.	As an optional additional procedure, individuals can be plotted on components drawn from the HapMap reference populations to assess likely ancestry groupings. Details of this procedure can be found at http://openwetware.org/wiki/User:Timothee_Flutre/Notebook/Postdoc/2012/01/22
-a.	Need to manually extract sample names and use these as an includes file at this section:
-for pop in {CEU,CHB,JPT,YRI}; do echo ${pop}; \
-hapmap2impute.py -i genotypes_CHR_${pop}_r28_nr.b36_fwd.txt.gz -n keepids.txt -o genotypes_hapmap_r28_b37_${pop}.impute.gz \
-    -b snps_hapmap_r28_nr_b37.bed.gz -s list_snps_redundant.txt; done
-zcat genotypes_hapmap_r28_b37_CEU.impute.gz | wc -l
-3907899
-zcat genotypes_hapmap_r28_b37_CHB.impute.gz | wc -l
-3933013
-zcat genotypes_hapmap_r28_b37_JPT.impute.gz | wc -l
-3931282
-zcat genotypes_hapmap_r28_b37_YRI.impute.gz | wc -l
-3862842
-b.	To generate this includes file (i.e. keepids.txt), for each population in turn ({POP1} in the script):
-iv.	sh ./MakeKeepIds.sh
-c.	More populations now exist than those listed in Flutre’s script; these can be obtained in the same manner.	
+#####Optional (but useful): plot individuals on components drawn from the HapMap reference populations to assess likely ancestry groupings. 
+
+Details of this procedure can be found at [Timothee Flutre's OpenWetWare]
+(http://openwetware.org/wiki/User:Timothee_Flutre/Notebook/Postdoc/2012/01/22).
+
+_Manually extract HapMap and own cohort individual names_
+
+```{bash}
+sh ./MakeKeepIds.sh
+```
+
+_Use keepids.txt at this section:_
+
+  for pop in {CEU,CHB,JPT,YRI}; do echo ${pop}; \
+  hapmap2impute.py -i genotypes_CHR_${pop}_r28_nr.b36_fwd.txt.gz -n keepids.txt -o genotypes_hapmap_r28_b37_${pop}.impute.gz -b snps_hapmap_r28_nr_b37.bed.gz -s list_snps_redundant.txt; done
+  zcat genotypes_hapmap_r28_b37_CEU.impute.gz | wc -l
+  3907899
+  zcat genotypes_hapmap_r28_b37_CHB.impute.gz | wc -l
+  3933013
+  zcat genotypes_hapmap_r28_b37_JPT.impute.gz | wc -l
+  3931282
+  zcat genotypes_hapmap_r28_b37_YRI.impute.gz | wc -l
+  3862842
+
+More populations now exist than those listed in Flutre’s script; these can be obtained in the same manner.	
  
-Heterozygosity Test
-31.	Test for unusual patterns of genome-wide heterogeneity in LD-pruned data
-a.	$plink \
+#####Heterozygosity Test
+
+_Test for unusual patterns of genome-wide heterogeneity in LD-pruned data_
+
+```{PLINK}
+$plink \
 --bfile $root_LD_pop_strat \
 --ibc \
 --out $root_het
-32.	Exclude samples identified as outliers 
-a.	R --file=Id_hets.R
-b.	$plink \
+```
+
+_Exclude samples identified as outliers_ 
+
+```{R}
+R --file=Id_hets.R
+```
+
+```{PLINK}
+$plink \
 --bfile $root_LD_pop_strat \
 --remove $root_LD_het_outliers_sample_exclude \
 --make-bed \
 --out $root_LD_het_cleaned
-c.	$plink \
+
+$plink \
 --bfile $root_pop_strat \
 --remove $root_LD_het_outliers_sample_exclude \
 --make-bed \
 --out $root_het_cleaned
- 
-Imputation
-Consult http://genome.sph.umich.edu/wiki/IMPUTE2:_1000_Genomes_Imputation_Cookbook and https://mathgen.stats.ox.ac.uk/impute/prephasing_and_imputation_with_impute2.tgz
-33.	Download reference files from http://mathgen.stats.ox.ac.uk/impute/impute_v2.html 
-34.	Copy impute2_examples folder (from https://mathgen.stats.ox.ac.uk/impute/prephasing_and_imputation_with_impute2.tgz) to work folder
-35.	If needed, download relevant strand file from http://www.well.ox.ac.uk/~wrayner/strand/
-a.	Split by chromosome
-i.	awk '{print $3, $5 > "$root_"$2".strand"}' HumanCoreExome-12v1-0_B-b37.strand
+```
 
-36.	Convert PLINK binary to GEN files (IMPUTE2 input) 
-a.	$plink \
+#####Imputation
+
+**Consult [http://genome.sph.umich.edu/wiki/IMPUTE2:_1000_Genomes_Imputation_Cookbook] and [https://mathgen.stats.ox.ac.uk/impute/prephasing_and_imputation_with_impute2.tgz]**
+
+**Download reference files from [http://mathgen.stats.ox.ac.uk/impute/impute_v2.html]**
+
+**Copy impute2_examples folder from [https://mathgen.stats.ox.ac.uk/impute/prephasing_and_imputation_with_impute2.tgz] to work folder**
+
+_Download relevant strand file from [http://www.well.ox.ac.uk/~wrayner/strand/] and split by chromosome_
+
+```{AWK}
+awk '{print $3, $5 > "$root_"$2".strand"}' HumanCoreExome-12v1-0_B-b37.strand
+```
+
+_Convert PLINK binary to GEN files (IMPUTE2 input)_ 
+
+```{PLINK}
+$plink \
 --bfile $root_het_cleaned \
 --recode oxford \ 
 --out $root_for_impute
-37.	Split whole--genome .gen into chromosome .gen
-a.	awk '{print > "Chr"$1".gen"}' $root_for_impute.gen
-38.	Check split has proceeded correctly – total line number of all chromosome .gen files should total $root_for_impute.gen
-a.	wc -l *.gen
-39.	Generate chunk files for each chromosome
-a.	sh ./MakeChunks.sh
-i.	This makes two sets of files
-1.	Chunks_chr[1-23].txt
-a.	These files list the base positions of the edges of each chromosome chunk and the number of SNPs in each chunk
-b.	Consult this file and merge chunks with few SNPs (e.g. <100) with neighbouring chunks
-i.	Example
-30000001 3.5e+07 875 
-35000001 4e+07 500
-40000001 4.5e+07 85
-45000001 5e+07 424
-50000001 5.5e+07 693
-2.	analysis_chunks_5Mb_chr[1-23].txt
-c.	These files are the input for IMPUTE2
-i.	Example – note merger of second and third chunk from above  
-30000001 3.5e+07
-35000001 4e+07
-40000001 5e+07
-50000001 5.5e+07
-40.	Modify the submit_impute2_jobs_to_cluster.R script (from impute2_examples) to accept chunk files without headers 
-a.	From:
-# read in file with chunk boundary definitions
-chunk.file <- paste(data.dir,"analysis_chunks_",chunk.size,"Mb_chr",chr,".txt", sep="")
-chunks <- read.table(chunk.file, head=T, as.is=T) 
-to:
-# read in file with chunk boundary definitions
-chunk.file <- paste(data.dir,"analysis_chunks_",chunk.size,"Mb_chr",chr,".txt", sep="")
-chunks <- read.table(chunk.file, head=F, as.is=T). 
-41.	Modify scripts in impute2_examples folder (prototype_imputation_job_posterior_sampled_haps.sh master_imputation_script_posterior_sampled_haps.sh and submit_impute_jobs_to_cluster.R) to fit personal needs. You are likely to need to limit number of jobs submitted to remain within local SGE rules – it is recommended to liaise with local system administrator to establish local best practice. 
-42.	Submit jobs. NB – this runs over 600 jobs on your cluster if not controlled
-a.	sh ./master_imputation_script_posterior_sampled_haps.sh 
-43.	Copy adapted scripts, adapt for imputing X chromosome (running the different X map and legend files), and run
-a.	Consult http://mathgen.stats.ox.ac.uk/impute/impute_v2.html 
-b.	For here on, it is advisable to gzip all .impute2 and .impute2_info files when not in use
-44.	Merge imputed chunks together (.impute2 and .impute2_info) to form a file for each chromosome
-a.	sh ./MergeImputedChunks.sh 
-45.	Add chromosome number to each SNP in each chromosome.impute2 file
-a.	sh ./AddChromosomeNumber.sh
-46.	Merge by-chromosome info files to form a file for the whole genome 
-a.	cat results-directory/*.impute2_info > path/to/results-directory/$root_whole_genome.impute2_info
-47.	For December 2013 release of reference data (Phase1 Integrated), there are several aspects that require clean-up. These do not appear to apply to the Phase 3 release. Steps marked * are required for the Phase1 Integrated release, but may not be needed for Phase3. 
-48.	* Exomic variants are named "." It is necessary to make these unique (as chr:position)
-a.	sh ./ReplaceDots.sh
-49.	Filter imputed data (.impute2 files) by info metric (e.g. remove all SNPs imputed with an info metric < 0.8 from the $root_whole_genome.impute2_info file and each .impute2 file)
-a.	sh ./FilterByInfoAll.sh 
-50.	Merge filtered by-chromosome .impute2 files to make a single whole-genome file
-a.	cat results-directory/*_New_filtered.impute2 > \
+```
+
+_Split whole--genome .gen into chromosome .gen_
+
+```{AWK}
+awk '{print > "Chr"$1".gen"}' $root_for_impute.gen
+```
+
+_Check split has proceeded correctly – total line number of all chromosome .gen files should total $root_for_impute.gen_
+
+```{bash}
+wc -l *.gen
+```
+
+_Generate chunk files for each chromosome_
+
+```{bash}
+sh ./MakeChunks.sh
+```
+
+This makes two sets of files:
+
+Chunks_chr[1-23].txt
+
+  30000001 3.5e+07 875 
+  35000001 4e+07 500
+  40000001 4.5e+07 85
+  45000001 5e+07 424
+  50000001 5.5e+07 693
+
+These files list the base positions of the edges of each chromosome chunk and the number of SNPs in each chunk.
+Consult this file and merge chunks with few SNPs (e.g. less than 100) with neighbouring chunks.
+
+analysis_chunks_5Mb_chr[1-23].txt
+
+  30000001 3.5e+07
+  35000001 4e+07
+  40000001 5e+07
+  50000001 5.5e+07
+
+These files are the input for IMPUTE2
+
+**Modify the submit_impute2_jobs_to_cluster.R script (from impute2_examples) to accept chunk files without headers**
+
+```{bash}
+From:
+  # read in file with chunk boundary definitions
+  chunk.file <- paste(data.dir,"analysis_chunks_",chunk.size,"Mb_chr",chr,".txt", sep="")
+  chunks <- read.table(chunk.file, head=T, as.is=T) 
+
+To:
+
+  # read in file with chunk boundary definitions
+  chunk.file <- paste(data.dir,"analysis_chunks_",chunk.size,"Mb_chr",chr,".txt", sep="")
+  chunks <- read.table(chunk.file, head=F, as.is=T). 
+```
+**Modify scripts in impute2_examples folder (prototype_imputation_job_posterior_sampled_haps.sh master_imputation_script_posterior_sampled_haps.sh and submit_impute_jobs_to_cluster.R) to fit personal needs.** 
+
+Likely to need to limit number of jobs submitted to remain within local SunGridEngine rules – liaise with local system administrator to establish local best practice.
+
+**Submit jobs**
+
+**NB – this runs over 600 jobs on your cluster if not controlled!**
+
+```{bash}
+sh ./master_imputation_script_posterior_sampled_haps.sh 
+```
+
+_Adapt scripts for imputing X chromosome (running the different X map and legend files), and run_
+
+Consult [http://mathgen.stats.ox.ac.uk/impute/impute_v2.html]
+
+***Merge imputed chunks together (.impute2 and .impute2_info) to form a file for each chromosome***
+
+```{bash}
+sh ./MergeImputedChunks.sh 
+```
+
+_Add chromosome number to each SNP in each chromosome.impute2 file_
+
+```{bash}
+sh ./AddChromosomeNumber.sh
+```
+
+_Merge by-chromosome info files to form a file for the whole genome_
+
+```{bash}
+cat results-directory/*.impute2_info > path/to/results-directory/$root_whole_genome.impute2_info
+```
+
+For December 2013 release of reference data (Phase1 Integrated), there are several aspects that require clean-up - these do not appear to apply to the Phase 3 release. Steps marked * are required for the Phase1 Integrated release, but may not be needed for Phase3.
+
+* _Exomic variants are named "." It is necessary to make these unique (as chr:position)_
+
+```{bash}
+sh ./ReplaceDots.sh
+```
+
+_Filter imputed data (.impute2 files) by info metric_ 
+
+```{bash}
+sh ./FilterByInfoAll.sh [threshold]
+```
+
+_Merge filtered by-chromosome .impute2 files to make a single whole-genome file_
+
+```{bash}
+cat results-directory/*_New_filtered.impute2 > \
 /results-directory/$root_whole_genome_filtered.impute2
-51.	* Remove duplicate SNPs from .impute2 file
-a.	awk '{print $2}' $root_whole_genome_filtered.impute2 | \
+```
+
+_* Remove duplicate SNPs from .impute2 file_
+
+```{AWK}
+awk '{print $2}' $root_whole_genome_filtered.impute2 | \
 sort | uniq –c | awk '$1 !=1 {print $0}' > Duplicates
-b.	awk '{print $2}' $root_whole_genome_filtered.impute2 | sort | uniq -d > Duplicates_cleaned
-i.	These produce two files called Duplicates and Duplicates_cleaned that list the duplicated SNPs in the file with and without the number of instances respectively
-c.	grep -vwF -f Duplicates_cleaned $root_whole_genome_filtered.impute2 > Temp1
-i.	Removes all lines with an instance of a duplicated rs# from $root_whole_genome_filtered.impute2 and outputs to Temp1:
-d.	awk '{print $2}' Temp1 | sort | uniq –d > DuplicatesRemoved
-i.	Repeats the check for duplicates – this file should now be empty; check with
-1.	less DuplicatesRemoved 
-ii.	Compare file lengths; the length of Temp1 should be the length of $root_whole_genome_filtered.impute2 minus the number of duplicated SNPs removed
-1.	wc -l Temp1 $root_whole_genome_filtered.impute2
-e.	mv Temp1 $root_whole_genome_filtered_cleaned.impute2
-52.	** Convert IMPUTE2 to hard-called PLINK format (hard-call threshold below is set to 0.8) **
-a.	$plink \
+
+awk '{print $2}' $root_whole_genome_filtered.impute2 | sort | uniq -d > Duplicates_cleaned
+```
+
+These produce two files called Duplicates and Duplicates_cleaned that list the duplicated SNPs in the file with and without the number of instances respectively
+
+```{bash}
+grep -vwF -f Duplicates_cleaned $root_whole_genome_filtered.impute2 > Temp1
+```
+
+Removes all lines with an instance of a duplicated rs# from $root_whole_genome_filtered.impute2 and outputs to Temp1:
+
+```{AWK}
+awk '{print $2}' Temp1 | sort | uniq –d > DuplicatesRemoved
+```
+
+Repeats the check for duplicates – this file should now be empty; check with
+
+```{bash}
+less DuplicatesRemoved 
+```
+
+Compare file lengths; the length of Temp1 should be the length of $root_whole_genome_filtered.impute2 minus the number of duplicated SNPs removed
+
+```{bash}
+wc -l Temp1 $root_whole_genome_filtered.impute2
+mv Temp1 $root_whole_genome_filtered_cleaned.impute2
+```
+
+**Convert IMPUTE2 to hard-called PLINK format**
+
+```{PLINK}
+$plink \
 --gen $root_whole_genome_filtered_cleaned.impute2 \
 --sample $root_for_impute.sample \
 --hard-call-threshold 0.8 \
 --make-bed \
 --out $root_post_imputation
-i.	NB: if SNP does not pass threshold, it is set as missing!
+```
+
+***NB: if SNP does not pass threshold, it is set as missing!***
  
-Post-imputation quality control	
-53.	** Remove rare SNPS depending on sample size and dataset characteristics (below minor allele frequency of ≥ 1%) **
-a.	$plink \
+#####Post-imputation quality control	
+
+**Remove rare SNPS depending on sample size and dataset characteristics**
+
+```{PLINK}
+$plink \
 --bfile $root_post_imputation \
 --maf 0.01 \
 --make-bed \
 --out $root_post_imputation_common
-54.	** Remove missing SNPs, including those set as missing above (recommend missing 
-< 2%) **
-a.	$plink \
+```
+
+** Remove missing SNPs, including those set as missing above**
+
+```{PLINK}
+$plink \
 --bfile $root_post_imputation_common \
 --geno 0.02 \
 --make-bed \
 --out $root_post_imputation_updated
-55.	Drop duplicated variants from imputation
-a.	sh ./DropDuplicatedSNPs.sh
-b.	$plink \
+```
+
+_Drop duplicated variants from imputation_
+
+```{bash}
+sh ./DropDuplicatedSNPs.sh
+```
+```{PLINK}
+$plink \
 --bfile $root_post_imputation_updated \
 --exclude $root_post_imputation_updated_duplicated_IDs \
 --make-bed \
 --out $root_post_imputation_final
- 
-56.	Convert imputed rs IDs back to rs… format
-a.	sh ./Relabel_rs.sh
-57.	Some rs IDs are imperfectly mapped, resulting in duplications with imputed IDs, so remove these accidental duplicates.
-a.	sh ./DropDuplicatedPositions.sh 
+```
 
-Association testing in PLINK/PLINK2
-58.	Generate covariates file using .pca.evec file (output from SMARTPCA)
-a.	Relabel header and add additional covariates (.pca.evec contains all PCs included in the SmartPCA analysis) to this file using R (script assumes a covariate file with the same column names for IDs, but no shared column names with the .pca.evec file, which is assumed to contain 100 PCs)
-i.	./R --file=Get_Covariates.R
-59.	** Run association against phenotype (here assumed to be contained in an external phenotype file, and called Outcome) **
-a.	$plink \
+**Convert imputed rs IDs back to rs… format**
+
+```{bash}
+sh ./Relabel_rs.sh
+```
+
+Some rs IDs are imperfectly mapped, resulting in duplications with imputed IDs, so remove these accidental duplicates.
+
+```{bash}
+sh ./DropDuplicatedPositions.sh 
+```
+
+#####Association testing in PLINK/PLINK2
+
+_Generate covariates file, merging $covar and .pca.evec (output from SMARTPCA) files_
+
+```{R}
+./R --file=Get_Covariates.R
+```
+
+Relabels header and adds additional covariates (.pca.evec contains all PCs included in the SmartPCA analysis) 
+Script assumes a covariate file with the same column names for IDs (FID and IID), but no shared column names with the .pca.evec file, which is assumed to contain 100 PCs).
+
+
+**Run association against phenotype** 
+
+Phenotype here assumed to be in $pheno as the only phenotype (otherwise use --mpheno [column number]) and called "Outcome". 
+
+```{PLINK}
+$plink \
 --bfile $root_post_imputation_final \
 --logistic/--linear (depending whether phenotype of interest is dichotomous or continuous) \
 --pheno $pheno  \
@@ -684,65 +829,93 @@ a.	$plink \
 --hide-covar
 --parameters 1-11
 --out $root_post_imputation_conc_analysis
-i.	Consider coding of phenotype – may require the use of --1 as an option if coding is in 0,1 format (rather than 1,2 format)
-ii.	--covar-number indicates which covariates to include. --covar-name can also be used for this 
-iii.	 --hide-covar hides results of association tests between phenotype and covariates
-iv.	--parameters specifies models to include in the analysis (see www.cog-genomics.org/plink2)
-1.	Allelic dosage additive effect (or homozygous minor dummy variable)
-2.	Dominance deviation, if present
-3.	--condition{-list} covariate(s), if present
-4.	--covar covariate(s), if present
-5.	Genotype x non-sex covariate 'interaction' terms, if present
-6.	Sex, if present
-7.	Sex-genotype interaction(s), if present 
- 
-60.	Investigate further any SNP that is highly associated with the phenotype, and exclude from analysis if justified
-a.	Run BLAT, available on the UCSC Genome Browser [10, 11] on the probe sequence (available from the array manifest) for all highly associated genotyped SNPs as a test of how well mapped/unique the sequence is, particularly with regards to similarity to sequences on the sex chromosomes. 
-b.	Discard any associated SNP that does not map uniquely.
-61.	All association details here assume an additive model – see PLINK website to implement other models (but see [12] for discussion of statistical issues of performing tests using multiple models). More association tests are available in PLINK and PLINK2.
+```
+
+Consider coding of phenotype – may require the use of --1 as an option if coding is in 0,1 format (rather than 1,2 format)
+  --covar-number indicates which covariates to include. --covar-name can also be used for this 
+  --hide-covar hides results of association tests between phenotype and covariates
+  --parameters specifies models to include in the analysis (see www.cog-genomics.org/plink2)
+     1.	Allelic dosage additive effect (or homozygous minor dummy variable)
+     2.	Dominance deviation, if present
+     3.	--condition{-list} covariate(s), if present
+     4.	--covar covariate(s), if present
+     5.	Genotype x non-sex covariate 'interaction' terms, if present
+     6.	Sex, if present
+     7.	Sex-genotype interaction(s), if present 
+
+_Investigate further any SNP that is highly associated with the phenotype, and exclude from analysis if justified_
+
+Run BLAT, [available on the UCSC Genome Browser](https://genome.ucsc.edu/cgi-bin/hgBlat?command=start) on the probe sequence (available from the array manifest) for all highly associated genotyped SNPs as a test of how well mapped/unique the sequence is, particularly with regards to similarity to sequences on the sex chromosomes. Discard any associated SNP that does not map uniquely.
+
+All association details here assume an additive model – see PLINK website to implement other models (but see [Knight and Lewis, 2012](http://www.ncbi.nlm.nih.gov/pubmed/22383645) for discussion of statistical issues of performing tests using multiple models). More association tests are available in PLINK and PLINK2.
  
-Using GCTA for Genomic-relatedness-matrix Restricted Maximum Likelihood (GREML) and Mixed Linear Model Association (MLMA)
-62.	** Make GRM (cut-offs are imposed below, MAF > 1%, IBD cut-off  > 0.025  **
-a.	./gcta \ 
+#####Using GCTA for Genomic-relatedness-matrix Restricted Maximum Likelihood (GREML) and Mixed Linear Model Association (MLMA)
+
+_Make GRM_
+Thresholds below: MAF 1%, IBD 0.025  
+
+```{GCTA}
+./gcta \ 
 --bfile $root_post_imputation_final \
 --autosome \
 --maf 0.01 \
 --grm-cutoff 0.025 \
 --make-grm \
 --out $root_post_imputation_final_grm
-i.	GRM is created here from imputed data - see text for discussion of the benefits of this.
+```
+
+GRM is created here from imputed data - see text for discussion of the benefits of this.
  
-63.	Generate principal components
-a.	./gcta \
+
+_Generate principal components_
+
+```{GCTA}
+./gcta \
 --grm $root_post_imputation_final_grm \
 --pca \
 --out $root_post_imputation_final_pca
-64.	** Univariate GREML, including principal components as continuous covariates **
-a.	./gcta \
+```
+
+_Univariate GREML, including principal components as continuous covariates_
+
+```{GCTA]
+./gcta \
 --grm $root_post_imputation_final_grm \
 --pheno $pheno \
 --covar $covar \ 
 --qcovar $root_post_imputation_final_pca \
 --reml \
 --out $root_post_imputation_final_greml
-i.	The number of principal components generated can be varied to assess the effect of their inclusion - if components are included as covariates for population stratification in GWAS, it is suggested to include the same number in GREML.
-ii.	This script assumes the covariates file contains only discrete covariates – if there are continuous covariates in the covariates file, these should be removed from the $covar file and added to the $root_post imputation_final_pca file. 
+```
+
+The number of principal components generated can be varied to assess the effect of their inclusion - if components are included as covariates for population stratification in GWAS, it is suggested to include the same number in GREML.
+
+This script assumes the covariates file contains only discrete covariates – if there are continuous covariates in the covariates file, these should be removed from the $covar file and added to the $root_post imputation_final_pca file. 
  
-65.	Run MLMA-LOCO for autosomes
-a.	./gcta \
+_Run MLMA-LOCO for autosomes_
+
+```{GCTA}
+./gcta \
 --bfile $root_post_imputation_final \
 --pheno $pheno \ 
 --covar $covar \
 --qcovar $root_post_imputation_final_pca \ 
 --mlma-loco \
 --out $root_post_imputation_final_mlma_analysis
-66.	Run MLMA for X chromosome
-a.	./plink \
+```
+
+
+_Run MLMA for X chromosome_
+
+```{PLINK}
+./plink \
 --bfile $root_post_imputation_final \
 --chr X \
 --make-bed \
 --out $root_post_imputation_final_X \
-b.	./gcta \
+```
+```{GCTA}
+./gcta \
 --grm $root_post_imputation_final_grm \
 --bfile $root_post_imputation_final_X \ 
 --pheno $pheno \
@@ -750,13 +923,21 @@ b.	./gcta \
 --qcovar $root_post_imputation_final_pca \ 
 --mlma \
 --out $root_post_imputation_final_mlma_analysis_X
+```
 
-67.	Merge results files together
-a.	sed -i '1d' $root_post_imputation_final_mlma_analysis_X.mlma
-b.	cat $root_post_imputation_final_mlma_analysis.mlmaloco $root_post_imputation_final_mlma_analysis_X.mlma >  $root_post_imputation_final_mlma_analysis_combined.mlmaloco
-SNP Clumping to identify independent hits
-68.	** Limit associations to one in each region of linkage disequilibrium **
-a.	$plink \
+_Merge results files together_
+
+```{bash}
+sed -i '1d' $root_post_imputation_final_mlma_analysis_X.mlma
+cat $root_post_imputation_final_mlma_analysis.mlmaloco $root_post_imputation_final_mlma_analysis_X.mlma >  $root_post_imputation_final_mlma_analysis_combined.mlmaloco
+```
+
+#####SNP Clumping to identify independent hits
+
+_Limit associations to lowest p-value in each region of linkage disequilibrium_ 
+
+```{PLINK}
+$plink \
 --bfile $root_post_imputation_final \
 --clump $root_post_imputation_final_analysis.assoc.logistic \
 --clump-p1 1 \
@@ -764,15 +945,19 @@ a.	$plink \
 --clump-r2 0.25 \
 --clump-kb 250 \
 --out $root_post_imputation_final_analysis_clumped
-i.	--clump-p1 is the p-value threshold below which to consider SNPs for inclusion as the reported SNP from the clump
-ii.	--clump-p2 is the p-value threshold below which to consider SNPs for inclusion in the clump
-iii.	--clump-r2 is the LD R2 threshold above which SNPs must be to be included in the same clump 
-iv.	--clump-kb is the maximum distance a clump SNP can be from the reported SNP
-1.	The options given here will generate clumps of all SNPs in LD (above R2 = 0.25), with a maximum size of 500kb, considering all SNPs regardless of  p-value  
-Annotation of Results
-69.	Make glist-hg19 (directions taken from PLINK website)
-a.	Download all RefSeq genes from UCSC
-i.	Go to Table Browser
+```
+
+  --clump-p1 is the p-value threshold below which to consider SNPs for inclusion as the reported SNP from the clump
+  --clump-p2 is the p-value threshold below which to consider SNPs for inclusion in the clump
+  --clump-r2 is the LD R2 threshold above which SNPs must be to be included in the same clump 
+  --clump-kb is the maximum distance a clump SNP can be from the reported SNP
+  
+The options given here will generate clumps of all SNPs in LD (above R2 = 0.25), with a maximum size of 500kb, considering all SNPs regardless of p-value  
+
+#####Annotation of Results
+
+**Download all RefSeq genes from [UCSC](https://genome.ucsc.edu/)**
+Go to [Table Browser](https://genome.ucsc.edu/cgi-bin/hgTables)
 1.	Pick Group: Genes and Gene Prediction Tracks
 2.	Pick Track: RefSeq Genes
 3.	Pick Table: refGene
@@ -782,29 +967,47 @@ i.	Go to Table Browser
 7.	Tick Chrom, cdsStart, cdsEnd and name2
 8.	Click GetOutput
 a.	Transfer output to file GeneList.txt 
- 
-b.	Slight reformat of gene list, then make glist_hg19
-i.	sed -i 's/#chrom/Chrom/g' GeneList.txt 
-ii.	sed -i 's/chr//g' GeneList.txt
-c.	Run as
-i.	sh ./Make_glist.sh GeneList.txt glist_hg19 
-70.	** Annotation in PLINK/PLINK2, annotating variants with genes within 250kb **
-d.	$plink \
+
+_Slight reformat of gene list, then make glist_hg19_
+
+```{bash}
+sed -i 's/#chrom/Chrom/g' GeneList.txt 
+sed -i 's/chr//g' GeneList.txt
+sh ./Make_glist.sh GeneList.txt glist_hg19 
+```
+
+_Annotation in PLINK/PLINK2_ 
+
+Annotates variants with genes within 250kb
+
+```{PLINK}
+$plink \
 --annotate $root_post_imputation_final_analysis_clumped.clumped \
 ranges=glist-hg19 \
 --border 250 \
 --out TEST $root_post_imputation_final_analysis_annotated
-71.	Alternatively, export results to a web tool such as http://jjwanglab.org/gwasrap
-Plot Manhattan and QQ plots
-72.	Select top million hits for Manhattan plot
-a.	head -1000001 $root_post_imputation_final_analysis.assoc.logisitic >  $root_post_imputation_final_analysis_for_MP
-73.	Run Manhattan plot and QQ plot scripts in R 
-a.	./R --file ManhattanPlotinR.R
-i.	Output is shown in Supplementary Figure 1
-b.	./R --file QQPlotinR.R 
-i.	QQ plot currently plots top 10% of the data - this can be altered by changing the "frac" option
-ii.	Output is shown in Supplementary Figure 2
-c.	Both of these plots can be output in different graphic file formats (.jpeg, .tiff, .png) - please refer to the R documentation (http://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/00Index.html) 
+```
+
+
+Alternatively, export results to a web tool such as [http://jjwanglab.org/gwasrap]
+
+#####Plot Manhattan and QQ plots
+
+_Select top million hits for Manhattan plot_
+
+```{bash}
+head -1000001 $root_post_imputation_final_analysis.assoc.logisitic >  $root_post_imputation_final_analysis_for_MP
+```
+
+_Run Manhattan plot and QQ plot scripts in R_ 
+
+```{R}
+./R --file ManhattanPlotinR.R
+./R --file QQPlotinR.R 
+```
+
+QQ plot currently plots top 10% of the data - this can be altered by changing the "frac" option
+Both of these plots can be output in different graphic file formats (.jpeg, .tiff, .png) - please refer to the [R documentation](http://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/00Index.html) 
  
 # Files in this GitHub repo
 
