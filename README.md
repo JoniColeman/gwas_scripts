@@ -804,7 +804,7 @@ sh ./DropDuplicatedPositions.sh
 
 #####Association testing in PLINK/PLINK2
 
-_Generate covariates file, merging $covar and $root..pca.evec (output from SMARTPCA) files_
+*Generate covariates file, merging $covar and $root.dataname_pop_strat_includes.pca.evec (output from SMARTPCA) files*
 
 ```{R}
 ./R --file=Get_Covariates.R $root $covar
