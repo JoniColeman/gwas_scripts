@@ -5,7 +5,7 @@
 ##### Please address questions, comments and improvements to Joni Coleman, jonathan[dot]coleman[at]kcl[dot]ac[dot]uk
 
 
-**The scripts in this repo are referenced in the publication referenced above, which provides a straight-forward guide to the quality control, imputation and analysis of genome-wide genotype data. Scripts can be tested using the toy PLINK dataset kindly provided by Shaun Purcell on the PLINK 1.07 website: [example.zip](http://pngu.mgh.harvard.edu/~purcell/plink/dist/example.zip).
+The scripts in this repo are referenced in the publication referenced above, which provides a straight-forward guide to the quality control, imputation and analysis of genome-wide genotype data. Scripts can be tested using the toy PLINK dataset kindly provided by Shaun Purcell on the PLINK 1.07 website: [example.zip](http://pngu.mgh.harvard.edu/~purcell/plink/dist/example.zip).
 
 Within this protocol, the following software is used:
 
@@ -422,13 +422,13 @@ _Calculate association between PCs and outcome measure in R_
 
 Both scripts require the same IDs to be in $root.pca.evec and $pheno, and look at 100 PCs by default. 
 
-***Short version (outputs the variance explained by each component and its significance when added to a model including the previous components):***
+*Short version (outputs the variance explained by each component and its significance when added to a model including the previous components):*
 
 ```{R}	
 ./R --file=PC--VS--OUTCOME_IN_R_SHORT.R $root_pop_strat
 ```
 
-***Long version (outputs the full results of the linear model, adding each component in turn):***
+*Long version (outputs the full results of the linear model, adding each component in turn):*
 
 ```{R}
 ./R --file= PC--VS--OUTCOME_IN_R_FULL.R $root_pop_strat
@@ -578,11 +578,11 @@ $plink \
 
 #####Imputation
 
-**Consult [http://genome.sph.umich.edu/wiki/IMPUTE2:_1000_Genomes_Imputation_Cookbook] and [https://mathgen.stats.ox.ac.uk/impute/prephasing_and_imputation_with_impute2.tgz]**
+*Consult [http://genome.sph.umich.edu/wiki/IMPUTE2:_1000_Genomes_Imputation_Cookbook] and [https://mathgen.stats.ox.ac.uk/impute/prephasing_and_imputation_with_impute2.tgz]*
 
-**Download reference files from [http://mathgen.stats.ox.ac.uk/impute/impute_v2.html]**
+*Download reference files from [http://mathgen.stats.ox.ac.uk/impute/impute_v2.html]*
 
-**Copy impute2_examples folder from [https://mathgen.stats.ox.ac.uk/impute/prephasing_and_imputation_with_impute2.tgz] to work folder**
+*Copy impute2_examples folder from [https://mathgen.stats.ox.ac.uk/impute/prephasing_and_imputation_with_impute2.tgz] to work folder*
 
 _Download relevant strand file from [http://www.well.ox.ac.uk/~wrayner/strand/] and split by chromosome_
 
@@ -639,7 +639,7 @@ analysis_chunks_5Mb_chr[1-23].txt
 
 These files are the input for IMPUTE2
 
-**Modify the submit_impute2_jobs_to_cluster.R script (from impute2_examples) to accept chunk files without headers**
+*Modify the submit_impute2_jobs_to_cluster.R script (from impute2_examples) to accept chunk files without headers*
 
 ```{bash}
 From:
@@ -653,11 +653,11 @@ To:
   chunk.file <- paste(data.dir,"analysis_chunks_",chunk.size,"Mb_chr",chr,".txt", sep="")
   chunks <- read.table(chunk.file, head=F, as.is=T). 
 ```
-**Modify scripts in impute2_examples folder (prototype_imputation_job_posterior_sampled_haps.sh master_imputation_script_posterior_sampled_haps.sh and submit_impute_jobs_to_cluster.R) to fit personal needs.** 
+*Modify scripts in impute2_examples folder (prototype_imputation_job_posterior_sampled_haps.sh master_imputation_script_posterior_sampled_haps.sh and submit_impute_jobs_to_cluster.R) to fit personal needs.*
 
 Likely to need to limit number of jobs submitted to remain within local SunGridEngine rules – liaise with local system administrator to establish local best practice.
 
-**Submit jobs**
+*Submit jobs*
 
 **NB – this runs over 600 jobs on your cluster if not controlled!**
 
@@ -669,7 +669,7 @@ _Adapt scripts for imputing X chromosome (running the different X map and legend
 
 Consult [http://mathgen.stats.ox.ac.uk/impute/impute_v2.html]
 
-***Merge imputed chunks together (.impute2 and .impute2_info) to form a file for each chromosome***
+*Merge imputed chunks together (.impute2 and .impute2_info) to form a file for each chromosome*
 
 ```{bash}
 sh ./MergeImputedChunks.sh 
@@ -742,7 +742,7 @@ wc -l Temp1 $root_whole_genome_filtered.impute2
 mv Temp1 $root_whole_genome_filtered_cleaned.impute2
 ```
 
-**Convert IMPUTE2 to hard-called PLINK format**
+*Convert IMPUTE2 to hard-called PLINK format*
 
 ```{PLINK}
 $plink \
@@ -757,7 +757,7 @@ $plink \
  
 #####Post-imputation quality control	
 
-**Remove rare SNPS depending on sample size and dataset characteristics**
+*Remove rare SNPS depending on sample size and dataset characteristics*
 
 ```{PLINK}
 $plink \
@@ -767,7 +767,7 @@ $plink \
 --out $root_post_imputation_common
 ```
 
-** Remove missing SNPs, including those set as missing above**
+*Remove missing SNPs, including those set as missing above*
 
 ```{PLINK}
 $plink \
@@ -790,7 +790,7 @@ $plink \
 --out $root_post_imputation_final
 ```
 
-**Convert imputed rs IDs back to rs… format**
+*Convert imputed rs IDs back to rs… format*
 
 ```{bash}
 sh ./Relabel_rs.sh
@@ -814,7 +814,7 @@ Relabels header and adds additional covariates (.pca.evec contains all PCs inclu
 Script assumes a covariate file with the same column names for IDs (FID and IID), but no shared column names with the .pca.evec file, which is assumed to contain 100 PCs).
 
 
-**Run association against phenotype** 
+*Run association against phenotype*
 
 Phenotype here assumed to be in $pheno as the only phenotype (otherwise use --mpheno [column number]) and called "Outcome". 
 
@@ -957,7 +957,7 @@ The options given here will generate clumps of all SNPs in LD (above R2 = 0.25),
 
 #####Annotation of Results
 
-**Download all RefSeq genes from [UCSC](https://genome.ucsc.edu/)**
+*Download all RefSeq genes from [UCSC](https://genome.ucsc.edu/)*
 
 Go to [Table Browser](https://genome.ucsc.edu/cgi-bin/hgTables)
          1.	Pick Group: Genes and Gene Prediction Tracks
