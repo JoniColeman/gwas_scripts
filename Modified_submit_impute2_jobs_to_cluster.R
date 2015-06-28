@@ -1,6 +1,6 @@
 #!/usr/bin/Rscript --vanilla
 
-root.dir <- "root_directory/"
+root.dir <- "."
 data.dir <- paste(root.dir,"Data/", sep="")
 
 # default settings; can change on command line

@@ -7,7 +7,7 @@ names(W)<-c("FID","IID","MEAN_PI_HAT") #rename columns
 X<-mean(W$MEAN_PI_HAT) #calculate mean of average pi hats
 Y<-sd(W$MEAN_PI_HAT) #calculate standard deviation of average pi hats
 Z<-X+(sigma*Y) # calculate threshold, here 6 SDs from mean
-sink(paste(root,"_IBD_INDIV.txt",sep=""))
+sink(paste(root,".IBD_INDIV.txt",sep=""))
 W #print average pi hats
-sink(paste(root,"_IBD_INDIV_outliers.txt",sep=""))
+sink(paste(root,".IBD_INDIV_outliers.txt",sep=""))
 subset(W,W$MEAN_PI_HAT>=Z)[,1:2] #print outliers

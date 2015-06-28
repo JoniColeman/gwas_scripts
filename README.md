@@ -1,4 +1,4 @@
-
+﻿
 
 # gwas_scripts
 ###### GWAS codebook (Coleman et al, Under Review), version 0.1.1
@@ -82,7 +82,7 @@ $plink \
 --bfile $root \
 --pheno $pheno \
 --make-bed \
---out $root_updated_pheno
+--out $root.updated_pheno
 ```
 
 _Update genders_
@@ -92,7 +92,7 @@ $plink \
 --bfile $root \
 --update-sex $genders \
 --make-bed \
---out $root_updated_genders
+--out $root.updated_genders
 ```
 
 _Update sample names_
@@ -102,7 +102,7 @@ $plink \
 --bfile $root \
 --update-ids $names \
 --make-bed \
---out $root_updated_names
+--out $root.updated_names
 ```
 
 _Select individuals for analysis_
@@ -112,7 +112,7 @@ $plink \
 --bfile $root \
 --keep $keeps \
 --make-bed \
---out $root_kept_names
+--out $root.kept_names
 ```
 
 Or:
@@ -122,7 +122,7 @@ $plink \
 --bfile $root \
 --remove $excludes \
 --make-bed \
---out $root_kept_names
+--out $root.kept_names
 ```
 
 _Select SNPs for analysis_
@@ -132,7 +132,7 @@ $plink \
 --bfile $root \
 --extract $insnps \
 --make-bed \
---out $root_kept_names_kept_samples
+--out $root.kept_names_kept_samples
 ```
 
 Or:
@@ -142,7 +142,7 @@ $plink \
 --bfile $root \
 --exclude $outsnps \
 --make-bed \
---out $root_kept_names_kept_samples
+--out $root.kept_names_kept_samples
 ```
 
 #####Filter for common SNPs
@@ -152,10 +152,10 @@ $plink \
 --bfile $root \
 --maf 0.01 \
 --make-bed \
---out $root_common
+--out $root.common
 ```
 
-This assumes no updates were made, otherwise modify the --bfile command to point to that file (e.g. $root_updated_names).
+This assumes no updates were made, otherwise modify the --bfile command to point to that file (e.g. $root.updated_names).
 
 
 #####Filter for call rate iteratively 
@@ -176,15 +176,15 @@ _Generate files for individual call rates and variant vall rates._
 
 ```{PLINK}
 $plink \
---bfile $root_filtered \
+--bfile $root.filtered \
 --missing \
---out $root_filtered_missing
+--out $root.filtered_missing
 ```
 
 _Examine the lowest call rates for variants:_ 
 
 ```{UNIX}
-sort -k 5 -gr $root_filtered_missing.imiss | head
+sort -k 5 -gr $root.filtered_missing.imiss | head
 ```
 
 Check no variants above threshold remain in column 5 (proportion missing).
@@ -192,7 +192,7 @@ Check no variants above threshold remain in column 5 (proportion missing).
 _Examine the lowest call rates for individuals:_ 
 
 ```{UNIX}
-sort -k 6 -gr $root_filtered_missing.lmiss | head
+sort -k 6 -gr $root.filtered_missing.lmiss | head
 ```
 Check no individuals above threshold remain in column 6 (proportion missing).
 
@@ -202,19 +202,19 @@ _--hardy calculates HWE test p-values:_
 
 ```{PLINK}
 $plink \ 
---bfile $root_filtered \
+--bfile $root.filtered \
 --hardy \
---out $root_hw_p_values
+--out $root.hw_p_values
 ```
 
 _--hwe removes deviant SNPs past a given threshold, 1x10^-5 below:_ 
 
 ```{PLINK}
 $plink \
---bfile $root_filtered \
+--bfile $root.filtered \
 --hwe 0.00001 \
 --make-bed \
---out  $root_hw_dropped
+--out  $root.hw_dropped
 ```
 NB: in case-control datasets, the default behaviour of hwe is to work on controls only
 
@@ -224,38 +224,38 @@ _Using a window of 1500 variants and a shift of 150 variants between windows, wi
 
 ```{PLINK}
 $plink \
---bfile $root_hw_dropped \
+--bfile $root.hw_dropped \
 --indep-pairwise 1500 150 0.2 \
---out $root_LD_one
+--out $root.LD_one
 ```
 
 _Extract pruned-in SNPs_
 
 ```{PLINK}
 $plink \
---bfile $root_hw_dropped \
---extract $root_LD_one.prune.in \
+--bfile $root.hw_dropped \
+--extract $root.LD_one.prune.in \
 --make-bed \
---out $root_LD_two
+--out $root.LD_two
 ```
 
 _Exclude  high-LD and non-autosomal regions from the pruned file (see [Mike Weale's website] (https://sites.google.com/site/mikeweale))_
 
 ```{AWK}
-awk –f highLDregions4bim_b37.awk $root_LD_two.bim > highLDexcludes
+awk –f highLDregions4bim_b37.awk $root.LD_two.bim > highLDexcludes
 ```
 ```{AWK}
-awk '($1 < 1) || ($1 > 22) {print $2}' $root_LD_two.bim > autosomeexcludes
+awk '($1 < 1) || ($1 > 22) {print $2}' $root.LD_two.bim > autosomeexcludes
 ```
 ```{bash}
 cat highLDexcludes autosomeexcludes > highLD_and_autosomal_excludes  
 ``` 
 ```{PLINK}
 $plink \
---bfile $root_LD_two \
+--bfile $root.LD_two \
 --exclude highLD_and_autosomal_excludes \
 --make-bed \
---out $root_LD_three
+--out $root.LD_three
 ```
 
 #####Add phenotype to differentiate groups
@@ -264,11 +264,11 @@ _E.g. Add site of collection ("Site") from an external pheotype file:_
 
 ```{PLINK}
 $plink \
---bfile $root_LD_three \
+--bfile $root.LD_three \
 --pheno $pheno \
 --pheno-name Site \
 --make-bed \
---out  $root_LD_four
+--out  $root.LD_four
 ```
 
 #####Compare genotypic and phenotypic gender
@@ -280,19 +280,19 @@ Requires entry of genome build, below this is hg37 ("b37").
 
 ```{PLINK}
 $plink \
---bfile $root_LD_two \
+--bfile $root.LD_two \
 --split-x b37 \
 --make-bed \
---out $root_LD_split
+--out $root.LD_split
 ```
 
 _Compare phenotypic gender to X chromosome heterogeneity and Y chromosome SNP count:_
 
 ```{PLINK}
 $plink \
---bfile $root_LD_split \
+--bfile $root.LD_split \
 --check-sex ycount \
---out $root_sex_check
+--out $root.sex_check
 ```
 
 IDs identified as discordant (not the phenotypic gender) or for which F is between 0.2 and 0.8 (not assigned a gender by PLINK), should be reviewed with the collection site where possible. This command also takes into account the number of Y chromosome SNPs present, to counteract the unreliable nature of the F statistic in assigning female gender. The number of Y SNPs with calls in females can be set as part of ycount, and will depend on the recalling method used and sample size. An additional check can be made by assessing whole-genome heterogeneity for all samples (see below) at this point – discordant gender may be the result of unusual heterogeneity
@@ -303,40 +303,40 @@ This command assumes a PLINK-format file of IDs for discordant individuals calle
 
 ```{PLINK}
 $plink \
---bfile $root_LD_four \
+--bfile $root.LD_four \
 --remove discordant_individuals.txt \
 --make-bed \
---out $root_LD_five
+--out $root.LD_five
 	
 $plink \
---bfile $root_hw_dropped \
+--bfile $root.hw_dropped \
 --remove discordant_individuals.txt \
 --make-bed \
---out $root_sexcheck_cleaned
+--out $root.sexcheck_cleaned
 ```
 
 #####Pairwise identical-by-descent (IBD) check
 
 ```{PLINK}
 $plink \
---bfile $root_LD_five \
+--bfile $root.LD_five \
 --genome \
 --make-bed \
---out $root_IBD
+--out $root.IBD
 ```
 
 _Remove one sample from each pair with pi-hat (% IBD) above threshold (0.1875 below):_
 
 ```{AWK}
-awk '$10 >= 0.1875 {print $1, $2}' $root_IBD.genome > $root_IBD_outliers.txt 
+awk '$10 >= 0.1875 {print $1, $2}' $root.IBD.genome > $root.IBD_outliers.txt 
 ```
 
 ```{PLINK}
 $plink \
---bfile $root_IBD \
---remove $root_IBD_outliers.txt \
+--bfile $root.IBD \
+--remove $root.IBD_outliers.txt \
 --make-bed \
---out $root_no_close_relatives
+--out $root.no_close_relatives
 ```
 
 _Calculate average IBD per individual using R, output outliers (defined as more than ***sigma*** standard deviations above the mean, as provided by the user):_
@@ -349,16 +349,16 @@ Exclude outliers from both LD-stripped and all SNP binary files
 
 ```{PLINK}
 $plink \
---bfile $root_LD_five \
---remove $root_IBD_INDIV_outliers.txt \
+--bfile $root.LD_five \
+--remove $root.IBD_INDIV_outliers.txt \
 --make-bed
---out $root_LD_IBD
+--out $root.LD_IBD
 
 $plink \
---bfile $root_sexcheck_cleaned \
---remove $root_IBD_INDIV_outliers.txt \
+--bfile $root.sexcheck_cleaned \
+--remove $root.IBD_INDIV_outliers.txt \
 --make-bed
---out $root_IBD_cleaned
+--out $root.IBD_cleaned
 ```
 
 #####Population stratification by principal component analysis in EIGENSOFT
@@ -381,13 +381,13 @@ Produces 100 PCs
 
 ```{perl}
 smartpca.perl \
--i $root_pop_strat.eigenstratgeno \
--a $root_pop_strat.snp \
--b $root_pop_strat.ind \
--o $root_pop_strat.pca \
--p $root_pop_strat.plot \
--e $root_pop_strat.eval \
--l $root_pop_strat_smartpca.log \
+-i $root.pop_strat.eigenstratgeno \
+-a $root.pop_strat.snp \
+-b $root.pop_strat.ind \
+-o $root.pop_strat.pca \
+-p $root.pop_strat.plot \
+-e $root.pop_strat.eval \
+-l $root.pop_strat_smartpca.log \
 -m 0 \
 -t 100 \
 -k 100 \
@@ -401,7 +401,7 @@ Inputs explained:
     -i  is the genotype file
     -a is the SNP names
     -b is the individual names
-    -o is the output eigenvectors ( $root_pop_strat.pca.evec)
+    -o is the output eigenvectors ( $root.pop_strat.pca.evec)
     -p plots the output file. This is only activated if gnuplot is installed, but is a necessary inclusion for smartpca to run. If gnuplot is not installed, this does not affect the running of smartpca. If gnuplot is installed, this produces a plot of the first component on the second.
     -e is the output eigenvalues
     -l is the log, including a list of individuals defined as outliers. 
@@ -415,7 +415,7 @@ _Minor edit to allow import into R_
 Remove leading tab. 
 
 ```{sed}
-sed -i 's/^[ \t]*//' $root_pop_strat.pca.evec
+sed -i 's/^[ \t]*//' $root.pop_strat.pca.evec
 ```
 
 _Calculate association between PCs and outcome measure in R_
@@ -425,13 +425,13 @@ Both scripts require the same IDs to be in $root.pca.evec and $pheno, and look a
 *Short version (outputs the variance explained by each component and its significance when added to a model including the previous components):*
 
 ```{R}	
-./R --file=PC--VS--OUTCOME_IN_R_SHORT.R $root_pop_strat
+./R --file=PC--VS--OUTCOME_IN_R_SHORT.R $root.pop_strat
 ```
 
 *Long version (outputs the full results of the linear model, adding each component in turn):*
 
 ```{R}
-./R --file= PC--VS--OUTCOME_IN_R_FULL.R $root_pop_strat
+./R --file= PC--VS--OUTCOME_IN_R_FULL.R $root.pop_strat
 ```
 
 _Run SmartPCA again to remove outliers_ 
@@ -441,13 +441,13 @@ Set –m 5 and –t x (where ***x*** is the number of PCs significantly associat
 
 ```{perl}
 smartpca.perl \
--i $root_pop_strat_outliers.eigenstratgeno \
--a $root_pop_strat_outliers.snp \
--b $root_pop_strat_outliers.ind \
--o $root_pop_strat_outliers.pca \
--p $root_pop_strat_outliers.plot \
--e $root_pop_strat_outliers.eval \
--l $root_pop_strat_outliers_smartpca.log \
+-i $root.pop_strat_outliers.eigenstratgeno \
+-a $root.pop_strat_outliers.snp \
+-b $root.pop_strat_outliers.ind \
+-o $root.pop_strat_outliers.pca \
+-p $root.pop_strat_outliers.plot \
+-e $root.pop_strat_outliers.eval \
+-l $root.pop_strat_outliers_smartpca.log \
 -m 5 \
 -t x \
 -k 100 \
@@ -474,16 +474,16 @@ sh ./ExtractAncestryOutliers.sh
 
 ```{PLINK}
 $plink \
---bfile $root_LD_IBD \
---remove $root_pop_strat_outliers.outliers \
+--bfile $root.LD_IBD \
+--remove $root.pop_strat_outliers.outliers \
 --make-bed \
---out $root_LD_pop_strat
+--out $root.LD_pop_strat
 
 $plink \
---bfile $root_IBD_cleaned \
---remove $root_pop_strat_outliers.outliers \
+--bfile $root.IBD_cleaned \
+--remove $root.pop_strat_outliers.outliers \
 --make-bed \
---out $root_pop_strat
+--out $root.pop_strat
 ```
 
 _Re-run to assess which components to include as covariates in the final analysis_
@@ -498,13 +498,13 @@ Run SmartPCA:
 
 ```{perl}
 smartpca.perl \
--i $root_pop_strat_final.eigenstratgeno \
--a $root_pop_strat_final.snp \
--b $root_pop_strat_final.ind \
--o $root_pop_strat_final.pca \
--p $root_pop_strat_final.plot \
--e $root_pop_strat_final.eval \
--l $root_pop_strat_final_smartpca.log \
+-i $root.pop_strat_final.eigenstratgeno \
+-a $root.pop_strat_final.snp \
+-b $root.pop_strat_final.ind \
+-o $root.pop_strat_final.pca \
+-p $root.pop_strat_final.plot \
+-e $root.pop_strat_final.eval \
+-l $root.pop_strat_final_smartpca.log \
 -m 0 \
 -t 100 \
 -k 100 \
@@ -514,7 +514,7 @@ smartpca.perl \
 Calculate association (short version):
 
 ```{R}	
-./R --file=PC--VS--OUTCOME_IN_R_SHORT.R $root_pop_strat_final
+./R --file=PC--VS--OUTCOME_IN_R_SHORT.R $root.pop_strat_final
 ```
 
 Include components significantly associated with outcome as covariates in the final analysis, or add PCs in turn until inflation falls to an accepted level (lambda ≈ 1).
@@ -551,9 +551,9 @@ _Test for unusual patterns of genome-wide heterogeneity in LD-pruned data_
 
 ```{PLINK}
 $plink \
---bfile $root_LD_pop_strat \
+--bfile $root.LD_pop_strat \
 --ibc \
---out $root_het
+--out $root.het
 ```
 
 _Exclude samples identified as outliers_ 
@@ -564,16 +564,16 @@ R --file=Id_hets.R
 
 ```{PLINK}
 $plink \
---bfile $root_LD_pop_strat \
---remove $root_LD_het_outliers_sample_exclude \
+--bfile $root.LD_pop_strat \
+--remove $root.LD_het_outliers_sample_exclude \
 --make-bed \
---out $root_LD_het_cleaned
+--out $root.LD_het_cleaned
 
 $plink \
---bfile $root_pop_strat \
---remove $root_LD_het_outliers_sample_exclude \
+--bfile $root.pop_strat \
+--remove $root.LD_het_outliers_sample_exclude \
 --make-bed \
---out $root_het_cleaned
+--out $root.het_cleaned
 ```
 
 #####Imputation
@@ -587,25 +587,25 @@ $plink \
 _Download relevant strand file from [http://www.well.ox.ac.uk/~wrayner/strand/] and split by chromosome_
 
 ```{AWK}
-awk '{print $3, $5 > "$root_"$2".strand"}' HumanCoreExome-12v1-0_B-b37.strand
+awk '{print $3, $5 > "$root."$2".strand"}' HumanCoreExome-12v1-0_B-b37.strand
 ```
 
 _Convert PLINK binary to GEN files (IMPUTE2 input)_ 
 
 ```{PLINK}
 $plink \
---bfile $root_het_cleaned \
+--bfile $root.het_cleaned \
 --recode oxford \ 
---out $root_for_impute
+--out $root.for_impute
 ```
 
 _Split whole--genome .gen into chromosome .gen_
 
 ```{AWK}
-awk '{print > "Chr"$1".gen"}' $root_for_impute.gen
+awk '{print > "Chr"$1".gen"}' $root.for_impute.gen
 ```
 
-_Check split has proceeded correctly – total line number of all chromosome .gen files should total $root_for_impute.gen_
+_Check split has proceeded correctly – total line number of all chromosome .gen files should total $root.for_impute.gen_
 
 ```{bash}
 wc -l *.gen
@@ -684,7 +684,7 @@ sh ./AddChromosomeNumber.sh
 _Merge by-chromosome info files to form a file for the whole genome_
 
 ```{bash}
-cat results-directory/*.impute2_info > path/to/results-directory/$root_whole_genome.impute2_info
+cat results-directory/*.impute2_info > path/to/results-directory/$root.whole_genome.impute2_info
 ```
 
 For December 2013 release of reference data (Phase1 Integrated), there are several aspects that require clean-up - these do not appear to apply to the Phase 3 release. Steps marked in bold are required for the Phase1 Integrated release, but may not be needed for Phase3.
@@ -705,25 +705,25 @@ _Merge filtered by-chromosome .impute2 files to make a single whole-genome file_
 
 ```{bash}
 cat results-directory/*_New_filtered.impute2 > \
-/results-directory/$root_whole_genome_filtered.impute2
+/results-directory/$root.whole_genome_filtered.impute2
 ```
 
 __Remove duplicate SNPs from .impute2 file__
 
 ```{AWK}
-awk '{print $2}' $root_whole_genome_filtered.impute2 | \
+awk '{print $2}' $root.whole_genome_filtered.impute2 | \
 sort | uniq –c | awk '$1 !=1 {print $0}' > Duplicates
 
-awk '{print $2}' $root_whole_genome_filtered.impute2 | sort | uniq -d > Duplicates_cleaned
+awk '{print $2}' $root.whole_genome_filtered.impute2 | sort | uniq -d > Duplicates_cleaned
 ```
 
 These produce two files called Duplicates and Duplicates_cleaned that list the duplicated SNPs in the file with and without the number of instances respectively
 
 ```{bash}
-grep -vwF -f Duplicates_cleaned $root_whole_genome_filtered.impute2 > Temp1
+grep -vwF -f Duplicates_cleaned $root.whole_genome_filtered.impute2 > Temp1
 ```
 
-Removes all lines with an instance of a duplicated rs# from $root_whole_genome_filtered.impute2 and outputs to Temp1:
+Removes all lines with an instance of a duplicated rs# from $root.whole_genome_filtered.impute2 and outputs to Temp1:
 
 ```{AWK}
 awk '{print $2}' Temp1 | sort | uniq –d > DuplicatesRemoved
@@ -735,22 +735,22 @@ Repeats the check for duplicates – this file should now be empty; check with
 less DuplicatesRemoved 
 ```
 
-Compare file lengths; the length of Temp1 should be the length of $root_whole_genome_filtered.impute2 minus the number of duplicated SNPs removed
+Compare file lengths; the length of Temp1 should be the length of $root.whole_genome_filtered.impute2 minus the number of duplicated SNPs removed
 
 ```{bash}
-wc -l Temp1 $root_whole_genome_filtered.impute2
-mv Temp1 $root_whole_genome_filtered_cleaned.impute2
+wc -l Temp1 $root.whole_genome_filtered.impute2
+mv Temp1 $root.whole_genome_filtered_cleaned.impute2
 ```
 
 *Convert IMPUTE2 to hard-called PLINK format*
 
 ```{PLINK}
 $plink \
---gen $root_whole_genome_filtered_cleaned.impute2 \
---sample $root_for_impute.sample \
+--gen $root.whole_genome_filtered_cleaned.impute2 \
+--sample $root.for_impute.sample \
 --hard-call-threshold 0.8 \
 --make-bed \
---out $root_post_imputation
+--out $root.post_imputation
 ```
 
 ***NB: if SNP does not pass threshold, it is set as missing!***
@@ -761,20 +761,20 @@ $plink \
 
 ```{PLINK}
 $plink \
---bfile $root_post_imputation \
+--bfile $root.post_imputation \
 --maf 0.01 \
 --make-bed \
---out $root_post_imputation_common
+--out $root.post_imputation_common
 ```
 
 *Remove missing SNPs, including those set as missing above*
 
 ```{PLINK}
 $plink \
---bfile $root_post_imputation_common \
+--bfile $root.post_imputation_common \
 --geno 0.02 \
 --make-bed \
---out $root_post_imputation_updated
+--out $root.post_imputation_updated
 ```
 
 _Drop duplicated variants from imputation_
@@ -784,10 +784,10 @@ sh ./DropDuplicatedSNPs.sh
 ```
 ```{PLINK}
 $plink \
---bfile $root_post_imputation_updated \
---exclude $root_post_imputation_updated_duplicated_IDs \
+--bfile $root.post_imputation_updated \
+--exclude $root.post_imputation_updated_duplicated_IDs \
 --make-bed \
---out $root_post_imputation_final
+--out $root.post_imputation_final
 ```
 
 *Convert imputed rs IDs back to rs… format*
@@ -820,7 +820,7 @@ Phenotype here assumed to be in $pheno as the only phenotype (otherwise use --mp
 
 ```{PLINK}
 $plink \
---bfile $root_post_imputation_final \
+--bfile $root.post_imputation_final \
 --logistic/--linear (depending whether phenotype of interest is dichotomous or continuous) \
 --pheno $pheno  \
 --pheno-name Outcome \
@@ -828,7 +828,7 @@ $plink \
 --covar-number 1-10
 --hide-covar
 --parameters 1-11
---out $root_post_imputation_conc_analysis
+--out $root.post_imputation_conc_analysis
 ```
 
 Consider coding of phenotype – may require the use of --1 as an option if coding is in 0,1 format (rather than 1,2 format)
@@ -858,12 +858,12 @@ Thresholds below: MAF 1%, IBD 0.025
 
 ```{GCTA}
 ./gcta \ 
---bfile $root_post_imputation_final \
+--bfile $root.post_imputation_final \
 --autosome \
 --maf 0.01 \
 --grm-cutoff 0.025 \
 --make-grm \
---out $root_post_imputation_final_grm
+--out $root.post_imputation_final_grm
 ```
 
 GRM is created here from imputed data - see text for discussion of the benefits of this.
@@ -873,37 +873,37 @@ _Generate principal components_
 
 ```{GCTA}
 ./gcta \
---grm $root_post_imputation_final_grm \
+--grm $root.post_imputation_final_grm \
 --pca \
---out $root_post_imputation_final_pca
+--out $root.post_imputation_final_pca
 ```
 
 _Univariate GREML, including principal components as continuous covariates_
 
 ```{GCTA]
 ./gcta \
---grm $root_post_imputation_final_grm \
+--grm $root.post_imputation_final_grm \
 --pheno $pheno \
 --covar $covar \ 
---qcovar $root_post_imputation_final_pca \
+--qcovar $root.post_imputation_final_pca \
 --reml \
---out $root_post_imputation_final_greml
+--out $root.post_imputation_final_greml
 ```
 
 The number of principal components generated can be varied to assess the effect of their inclusion - if components are included as covariates for population stratification in GWAS, it is suggested to include the same number in GREML.
 
-This script assumes the covariates file contains only discrete covariates – if there are continuous covariates in the covariates file, these should be removed from the $covar file and added to the $root_post imputation_final_pca file. 
+This script assumes the covariates file contains only discrete covariates – if there are continuous covariates in the covariates file, these should be removed from the $covar file and added to the $root.post imputation_final_pca file. 
  
 _Run MLMA-LOCO for autosomes_
 
 ```{GCTA}
 ./gcta \
---bfile $root_post_imputation_final \
+--bfile $root.post_imputation_final \
 --pheno $pheno \ 
 --covar $covar \
---qcovar $root_post_imputation_final_pca \ 
+--qcovar $root.post_imputation_final_pca \ 
 --mlma-loco \
---out $root_post_imputation_final_mlma_analysis
+--out $root.post_imputation_final_mlma_analysis
 ```
 
 
@@ -911,27 +911,27 @@ _Run MLMA for X chromosome_
 
 ```{PLINK}
 ./plink \
---bfile $root_post_imputation_final \
+--bfile $root.post_imputation_final \
 --chr X \
 --make-bed \
---out $root_post_imputation_final_X \
+--out $root.post_imputation_final_X \
 ```
 ```{GCTA}
 ./gcta \
---grm $root_post_imputation_final_grm \
---bfile $root_post_imputation_final_X \ 
+--grm $root.post_imputation_final_grm \
+--bfile $root.post_imputation_final_X \ 
 --pheno $pheno \
 --covar $covar \
---qcovar $root_post_imputation_final_pca \ 
+--qcovar $root.post_imputation_final_pca \ 
 --mlma \
---out $root_post_imputation_final_mlma_analysis_X
+--out $root.post_imputation_final_mlma_analysis_X
 ```
 
 _Merge results files together_
 
 ```{bash}
-sed -i '1d' $root_post_imputation_final_mlma_analysis_X.mlma
-cat $root_post_imputation_final_mlma_analysis.mlmaloco $root_post_imputation_final_mlma_analysis_X.mlma >  $root_post_imputation_final_mlma_analysis_combined.mlmaloco
+sed -i '1d' $root.post_imputation_final_mlma_analysis_X.mlma
+cat $root.post_imputation_final_mlma_analysis.mlmaloco $root.post_imputation_final_mlma_analysis_X.mlma >  $root.post_imputation_final_mlma_analysis_combined.mlmaloco
 ```
 
 #####SNP Clumping to identify independent hits
@@ -940,13 +940,13 @@ _Limit associations to lowest p-value in each region of linkage disequilibrium_
 
 ```{PLINK}
 $plink \
---bfile $root_post_imputation_final \
---clump $root_post_imputation_final_analysis.assoc.logistic \
+--bfile $root.post_imputation_final \
+--clump $root.post_imputation_final_analysis.assoc.logistic \
 --clump-p1 1 \
 --clump-p2 1 \
 --clump-r2 0.25 \
 --clump-kb 250 \
---out $root_post_imputation_final_analysis_clumped
+--out $root.post_imputation_final_analysis_clumped
 ```
 
     --clump-p1 is the p-value threshold below which to consider SNPs for inclusion as the reported SNP from the clump
@@ -987,10 +987,10 @@ Annotates variants with genes within 250kb
 
 ```{PLINK}
 $plink \
---annotate $root_post_imputation_final_analysis_clumped.clumped \
+--annotate $root.post_imputation_final_analysis_clumped.clumped \
 ranges=glist-hg19 \
 --border 250 \
---out TEST $root_post_imputation_final_analysis_annotated
+--out TEST $root.post_imputation_final_analysis_annotated
 ```
 
 
@@ -1001,7 +1001,7 @@ Alternatively, export results to a web tool such as [http://jjwanglab.org/gwasra
 _Select top million hits for Manhattan plot_
 
 ```{bash}
-head -1000001 $root_post_imputation_final_analysis.assoc.logisitic >  $root_post_imputation_final_analysis_for_MP
+head -1000001 $root.post_imputation_final_analysis.assoc.logisitic >  $root.post_imputation_final_analysis_for_MP
 ```
 
 _Run Manhattan plot and QQ plot scripts in R_ 

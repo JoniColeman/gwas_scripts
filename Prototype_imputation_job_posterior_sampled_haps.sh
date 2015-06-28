@@ -6,7 +6,7 @@ CHUNK_START=`printf "%.0f" $2`
 CHUNK_END=`printf "%.0f" $3`
 
 # directories
-ROOT_DIR=root/
+ROOT_DIR="./"
 DATA_DIR=${ROOT_DIR}downloaded_references/
 RESULTS_DIR=${ROOT_DIR}results_directory/
 
