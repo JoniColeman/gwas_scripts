@@ -1,7 +1,7 @@
-genotypename: $root.LD_IBD.bed
-snpname: $root.LD_IBD.bim
-indivname: $root.LD_IBD.fam
+genotypename: $root.LD_pop_strat.bed
+snpname: $root.LD_pop_strat.bim
+indivname: $root.LD_pop_strat.fam
 outputformat: EIGENSTRAT
-genotypeoutname: $root.pop_strat.eigenstratgeno
-snpoutname: $root.pop_strat.snp
-indivoutname: $root.pop_strat.ind
+genotypeoutname: $root.PCs_for_covariates.eigenstratgeno
+snpoutname: $root.PCs_for_covariates.snp
+indivoutname: $root.PCs_for_covariates.ind
