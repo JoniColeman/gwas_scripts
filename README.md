@@ -498,13 +498,13 @@ Run SmartPCA:
 
 ```{perl}
 smartpca.perl \
--i $root.pop_strat_final.eigenstratgeno \
--a $root.pop_strat_final.snp \
--b $root.pop_strat_final.ind \
--o $root.pop_strat_final.pca \
--p $root.pop_strat_final.plot \
--e $root.pop_strat_final.eval \
--l $root.pop_strat_final_smartpca.log \
+-i $root.PCS_for_covariates.eigenstratgeno \
+-a $root.PCS_for_covariates.snp \
+-b $root.PCS_for_covariates.ind \
+-o $root.PCS_for_covariates.pca \
+-p $root.PCS_for_covariates.plot \
+-e $root.PCS_for_covariates.eval \
+-l $root.PCS_for_covariates_smartpca.log \
 -m 0 \
 -t 100 \
 -k 100 \
@@ -514,7 +514,7 @@ smartpca.perl \
 Calculate association (short version):
 
 ```{R}	
-./R --file=PC--VS--OUTCOME_IN_R_SHORT.R $root.pop_strat_final
+./R --file=PC--VS--OUTCOME_IN_R_SHORT.R $root.PCS_for_covariates
 ```
 
 Include components significantly associated with outcome as covariates in the final analysis, or add PCs in turn until inflation falls to an accepted level (lambda ≈ 1).
