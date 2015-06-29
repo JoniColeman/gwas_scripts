@@ -754,7 +754,13 @@ $plink \
 ```
 
 ***NB: if SNP does not pass threshold, it is set as missing!***
- 
+
+At this point, it is recommended to gzip all IMPUTE2 files - note that this will be a large job.
+
+```{bash}
+gzip *impute2* 
+```
+
 #####Post-imputation quality control	
 
 *Remove rare SNPS depending on sample size and dataset characteristics*
