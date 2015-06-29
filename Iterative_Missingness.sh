@@ -1,47 +1,37 @@
-#Remove SNPs with completeness < 90%
+genomind=(1-($1/100))
 
 ./plink2 \
 --bfile $root.common \
---geno 0.1 \
+--geno $genomind_1 \
 --make-bed \
---out $root.common_SNP90
+--out $root.common_SNP$1
 
 #Remove samples with completeness < 90%
 
 ./plink2 \
 --bfile $root.common_SNP90 \
---mind 0.1 \
+--mind $genomind_initial \
 --make-bed \
---out $root.common_sample90_SNP90
+--out $root.common_sample$1.SNP$1
 
-#Remove SNPs with completeness < 95%
+for i in ${seq(($1+$3), $2, $3)}
+
+do
+
+genomind=(1-($i/100))
 
 ./plink2 \
---bfile $root.common_sample90_SNP90 \
---geno 0.05 \
+--bfile $root.common_sample($i-$3).SNP($i-$3) \
+--geno $genomind \
 --make-bed \
---out $root.common_sample90_SNP95
+--out $root.common_sample($i-$3).SNP$i
 
-#Remove samples with completeness < 95%
+#Remove samples with completeness < 90%
 
 ./plink2 \
---bfile $root.common_sample90_SNP95 \
---mind 0.05 \
+--bfile $root.common_sample($i-$3).SNP$i \
+--mind $genomind \
 --make-bed \
---out $root.common_sample95_SNP95
-
-#Remove SNPs with completeness < 99%
-
-./plink2 \
---bfile $root.common_sample95_SNP95 \
---geno 0.01 \
---make-bed \
---out $root.common_sample95_SNP99
-
-#Remove samples with completeness < 99%
-
-./plink2 \
---bfile $root.common_sample95_SNP99 \
---mind 0.01 \
---make-bed \
---out $root.filtered
+--out $root.common_sample$i.SNP$i
+ 
+done
