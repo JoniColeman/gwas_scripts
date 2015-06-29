@@ -763,7 +763,7 @@ gzip *impute2*
 
 #####Post-imputation quality control	
 
-*Remove rare SNPS depending on sample size and dataset characteristics*
+*Remove rare SNPs depending on sample size and dataset characteristics*
 
 ```{PLINK}
 $plink \
