@@ -132,7 +132,7 @@ $plink \
 --bfile $root \
 --extract $insnps \
 --make-bed \
---out $root.kept_names_kept_samples
+--out $root.kept_samples
 ```
 
 Or:
@@ -142,7 +142,7 @@ $plink \
 --bfile $root \
 --exclude $outsnps \
 --make-bed \
---out $root.kept_names_kept_samples
+--out $root.kept_samples
 ```
 
 #####Filter for common SNPs
