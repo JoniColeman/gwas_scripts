@@ -161,12 +161,12 @@ This assumes no updates were made, otherwise modify the --bfile command to point
 #####Filter for call rate iteratively 
 
 ```{bash}
-sh ./Iterative_Missingness.sh [begin] [intermediate] [final] 
+sh ./Iterative_Missingness.sh [begin] [final] [steps] 
 ```
-_Removes SNPs then samples at increasingly high cut-offs. E.g. To remove at 90%, 95% and 99%:_
+_Removes SNPs then samples at increasingly high cut-offs. E.g. To remove at 90% to 99%, in steps of 1%:_
 
 ```{bash}
-sh ./Iterative_Missingness.sh 90 95 99 
+sh ./Iterative_Missingness.sh 90 99 1 
 ```
 
 
