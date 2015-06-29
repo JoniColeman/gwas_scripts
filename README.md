@@ -886,7 +886,7 @@ _Generate principal components_
 
 _Univariate GREML, including principal components as continuous covariates_
 
-```{GCTA]
+```{GCTA}
 ./gcta \
 --grm $root.post_imputation_final_grm \
 --pheno $pheno \
