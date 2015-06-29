@@ -996,7 +996,7 @@ $plink \
 --annotate $root.post_imputation_final_analysis_clumped.clumped \
 ranges=glist-hg19 \
 --border 250 \
---out TEST $root.post_imputation_final_analysis_annotated
+--out $root.post_imputation_final_analysis_annotated
 ```
 
 
