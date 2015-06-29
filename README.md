@@ -31,7 +31,7 @@ Not covered by this protocol, see http://confluence.brc.iop.kcl.ac.uk:8090/x/4AA
 The Human Core Exome array contains some SNPs called "SNP…" In order to make ZCall run effectively, it is necessary to change the name of these SNPs, e.g. to "xxx…" This can be done using the UNIX program sed
 
 ```{sed}
-sed 's/SNP/xxx/g' < rootname.report > rootname_updated.report
+sed 's/SNP/xxx/g' < rootname.report > rootname.updated.report
 ```
 
 Following the implementation of the rare caller pipeline, it is recommended to review the concordance between ZCall and Opticall − concordance is expected to be high (>99%). 
