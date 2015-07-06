@@ -39,7 +39,8 @@ Following the implementation of the rare caller pipeline, it is recommended to r
 #####Define names and locations of important files and software
 
 ```{UNIX}
-root=/path/to/rootname
+echo 
+"root=/path/to/rootname
 pheno=/path/to/external_pheno.phe
 covar=/path/to/covariates.cov
 genders=/path/to/external_genders.txt
@@ -48,7 +49,10 @@ keeps=/path/to/samples_to_keep.txt
 excludes=/path/to/samples_to_exclude.txt
 insnps=/path/to/SNPs_to_keep.txt
 outsnps=/path/to/SNPs_to_exclude.txt
-plink=/path/to/plink2
+plink=/path/to/plink2"
+
+> Config.conf
+
 ```
 
 File formats are the [PLINK file formats] (http://pngu.mgh.harvard.edu/~purcell/plink/data.shtml).
