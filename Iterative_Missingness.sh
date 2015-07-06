@@ -1,6 +1,9 @@
-genomind=(1-($1/100))
+source ./Config.conf
 
-./plink2 \
+aspercent=$(echo $1 " / 100" | bc -l)
+genomind_1=$(echo "1-"$aspercent | bc -l)
+
+$plink \
 --bfile $root.common \
 --geno $genomind_1 \
 --make-bed \
@@ -8,30 +11,32 @@ genomind=(1-($1/100))
 
 #Remove samples with completeness < 90%
 
-./plink2 \
+$plink \
 --bfile $root.common_SNP90 \
---mind $genomind_initial \
+--mind $genomind_1 \
 --make-bed \
 --out $root.common_sample$1.SNP$1
 
-for i in ${seq(($1+$3), $2, $3)}
+newstep=$(($1+$3))
+
+for i in $(seq $newstep $3 $2)
 
 do
 
-genomind=(1-($i/100))
+aspercent=$(echo $i " / 100" | bc -l)
+genomind=$(echo "1-"$aspercent | bc -l)
+prefix=$(($i-$3))
 
-./plink2 \
---bfile $root.common_sample($i-$3).SNP($i-$3) \
+$plink \
+--bfile $root.common_sample$prefix.SNP$prefix \
 --geno $genomind \
 --make-bed \
---out $root.common_sample($i-$3).SNP$i
+--out $root.common_sample$prefix.SNP$i
 
-#Remove samples with completeness < 90%
-
-./plink2 \
---bfile $root.common_sample($i-$3).SNP$i \
+$plink \
+--bfile $root.common_sample$prefix.SNP$i \
 --mind $genomind \
 --make-bed \
 --out $root.common_sample$i.SNP$i
- 
+
 done
