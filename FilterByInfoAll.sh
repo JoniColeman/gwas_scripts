@@ -1,3 +1,5 @@
+source Config.conf
+
 gunzip $root.whole_genome.impute2_info.gz
 awk '$5 >= 0.8' $root.whole_genome.impute2_info > $root.whole_genome_filtered.impute2_info
 gzip $root.whole_genome.impute2_info
