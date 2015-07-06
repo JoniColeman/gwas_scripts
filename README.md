@@ -201,7 +201,7 @@ Check no individuals above threshold remain in column 6 (proportion missing).
 _--hardy calculates HWE test p-values:_
 
 ```{PLINK}
-$plink \ 
+$plink \
 --bfile $root.filtered \
 --hardy \
 --out $root.hw_p_values
