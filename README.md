@@ -371,8 +371,14 @@ _Convert files to EIGENSOFT format using CONVERTF_
 
 Requires par file to convert from packedped format to eigenstrat format
 
-```{perl}
-convertf -p parfile.par
+```{UNIX}
+convertf -p <(printf "genotypename: "$root".LD_IBD.bed
+snpname: "$root".LD_IBD.bim
+indivname: "$root".LD_IBD.fam
+outputformat: EIGENSTRAT
+genotypeoutname: "$root".pop_strat.eigenstratgeno
+snpoutname: "$root".pop_strat.snp
+indivoutname: "$root".pop_strat.ind")
 ```
 
 _Run SmartPCA, removing no outliers_ 
