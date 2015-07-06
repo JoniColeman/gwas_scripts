@@ -1,3 +1,5 @@
+source Config.conf
+
 for i in {1..22}
 do
 awk '$2=="." {$2= $1 ":" $3} {print}' < New_Chromosome$i.impute2 > Temp1
