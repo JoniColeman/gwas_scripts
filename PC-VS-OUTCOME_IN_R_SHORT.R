@@ -4,7 +4,7 @@ pheno<- args[2]
 PCAEVEC<-read.table(paste(root,".pca.evec",sep=""),head=T)
 PHENOTYPE<-read.table(pheno,head=T)
 PCAPHENO<-merge(PCAEVEC,PHENOTYPE)
-sink(paste(root,"path/to/PC_Output_Associations.txt",sep=""))
+sink(paste(root,"PC_Output_Associations.txt",sep=""))
 writeLines(c(" PC P  R-squared"))
 options(scipen=999)
 for (i in 1:100) {
