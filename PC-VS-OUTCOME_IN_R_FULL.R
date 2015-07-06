@@ -9,6 +9,6 @@ sink(paste(root,"PC_Output_Associations.txt",sep=""))
 phenoname <- colnames(PHENOTYPE)[3]
 for (i in 1:100) {
 DATA<-PCAPHENO[,c(3:(i+2),103)]
-print(summary(lm(paste(phenoname," ~ ., DATA",sep=""))))
+print(summary(lm(paste(phenoname," ~ .\, DATA",sep=""))))
 }
 sink()
