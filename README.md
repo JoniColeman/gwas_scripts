@@ -291,11 +291,11 @@ _Compare phenotypic gender to X chromosome heterogeneity and Y chromosome SNP co
 ```{PLINK}
 $plink \
 --bfile $root.LD_split \
---check-sex ycount \
+--check-sex ycount 0.2 0.8 0 1 \
 --out $root.sex_check
 ```
 
-IDs identified as discordant (not the phenotypic gender) or for which F is between 0.2 and 0.8 (not assigned a gender by PLINK), should be reviewed with the collection site where possible. This command also takes into account the number of Y chromosome SNPs present, to counteract the unreliable nature of the F statistic in assigning female gender. The number of Y SNPs with calls in females can be set as part of ycount, and will depend on the recalling method used and sample size. An additional check can be made by assessing whole-genome heterogeneity for all samples (see below) at this point – discordant gender may be the result of unusual heterogeneity
+IDs identified as discordant (not the phenotypic gender) or for which F is between 0.2 and 0.8 (not assigned a gender by PLINK), should be reviewed with the collection site where possible. This command also takes into account the number of Y chromosome SNPs present, to counteract the unreliable nature of the F statistic in assigning female gender. The number of Y SNPs with calls in females can be set as part of ycount (above females have a maximum of 0, and males a maximum of 1), and will depend on the recalling method used and sample size. An additional check can be made by assessing whole-genome heterogeneity for all samples (see below) at this point – discordant gender may be the result of unusual heterogeneity
 
 _Remove discordant IDs that cannot be resolved:_ 
 
