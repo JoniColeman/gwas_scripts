@@ -12,6 +12,6 @@ phenoname <- colnames(PHENOTYPE)[3]
 for (i in 1:100) {
 DATA<-PCAPHENO[,c(3:(i+2),103)]
 DATA2<-PCAPHENO[,c(3:(i+1),103)]
-print(c(i, summary(lm(paste(phenoname," ~ ., DATA",sep="")))$coefficients[(i+1),4], summary(lm(paste(phenoname," ~ ., DATA",sep="")))$r.squared - summary(lm(paste(phenoname," ~ ., DATA2",sep="")))$r.squared))
+print(c(i, summary(lm(paste(phenoname," ~ .\, DATA",sep="")))$coefficients[(i+1),4], summary(lm(paste(phenoname," ~ .\, DATA",sep="")))$r.squared - summary(lm(paste(phenoname," ~ .\, DATA2",sep="")))$r.squared))
 }
 sink()
