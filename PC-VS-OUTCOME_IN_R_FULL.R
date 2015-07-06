@@ -1,5 +1,6 @@
-root<-$1
-pheno<-$2
+args <- commandArgs(TRUE)
+root <- args[1]
+pheno <- args[2]
 PCAEVEC<-read.table(paste(root,".pca.evec",sep=""),head=T)
 PHENOTYPE<-read.table(pheno,head=T)
 PCAPHENO<-merge(PCAEVEC,PHENOTYPE)
