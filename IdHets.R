@@ -1,6 +1,7 @@
 data_dir <- getwd()
 setwd(data_dir)
-root<-$1
+args <- commandArgs(TRUE)
+root <- args[1]
 # default
 ibc_file=paste(root,".ibc",sep="")
 sdcut=3 # number of sds at which to impose cut offs
