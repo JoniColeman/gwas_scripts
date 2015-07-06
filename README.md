@@ -363,7 +363,7 @@ $plink \
 
 #####Population stratification by principal component analysis in EIGENSOFT
 
-Consult [https://sites.google.com/site/mikeweale/software/eigensoftplus] [http://computing.bio.cam.ac.uk/local/doc/<programme name>.txt], [http://genetsim.org/class/EIG3.0/POPGEN/README.html]
+Consult [https://sites.google.com/site/mikeweale/software/eigensoftplus] and [http://genetsim.org/class/EIG3.0/POPGEN/README.html]
 
 ___Run EIGENSOFT using LD-pruned binary___
 
