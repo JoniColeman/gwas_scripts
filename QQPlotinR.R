@@ -1,5 +1,6 @@
 source("qq_plot_v7.R")
-root<-$1
+args <- commandArgs(TRUE)
+root <- args[1]
 gwas1<-read.table("$root.post_imputation_final_analysis.assoc.logistic",head=T)
 x1<-gwas1$P
 pdf(paste(root,".post_imputation_final_analysis_QQ.pdf",sep=""),width=8,height=6)
