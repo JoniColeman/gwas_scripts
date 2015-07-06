@@ -1,3 +1,5 @@
+source Config.conf
+
 awk '{print $2}' $root.post_imputation_final_rs_only.bim | \
 sort | \ 
 uniq –d > More_Duplicates_Removed
