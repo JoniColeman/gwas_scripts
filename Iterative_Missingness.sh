@@ -40,3 +40,8 @@ $plink \
 --out $root.common_sample$i.SNP$i
 
 done
+
+$plink \
+--bfile $root.common_sample$i.SNP$i \
+--make-bed \
+--out $root.filtered 
