@@ -351,13 +351,13 @@ Exclude outliers from both LD-stripped and all SNP binary files
 $plink \
 --bfile $root.LD_five \
 --remove $root.IBD_INDIV_outliers.txt \
---make-bed
+--make-bed \
 --out $root.LD_IBD
 
 $plink \
 --bfile $root.sexcheck_cleaned \
 --remove $root.IBD_INDIV_outliers.txt \
---make-bed
+--make-bed \
 --out $root.IBD_cleaned
 ```
 
