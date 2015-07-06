@@ -184,7 +184,7 @@ $plink \
 _Examine the lowest call rates for variants:_ 
 
 ```{UNIX}
-sort -k 5 -gr $root.filtered_missing.imiss | head
+sort -k 5 -gr $root.filtered_missing.lmiss | head
 ```
 
 Check no variants above threshold remain in column 5 (proportion missing).
@@ -192,7 +192,7 @@ Check no variants above threshold remain in column 5 (proportion missing).
 _Examine the lowest call rates for individuals:_ 
 
 ```{UNIX}
-sort -k 6 -gr $root.filtered_missing.lmiss | head
+sort -k 6 -gr $root.filtered_missing.imiss | head
 ```
 Check no individuals above threshold remain in column 6 (proportion missing).
 
