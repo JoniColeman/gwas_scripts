@@ -397,7 +397,7 @@ smartpca.perl \
 -m 0 \
 -t 100 \
 -k 100 \
--s 6 \
+-s 6
 ```
 
 Note that the order of the inputs is important.
