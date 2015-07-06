@@ -36,23 +36,19 @@ sed 's/SNP/xxx/g' < rootname.report > rootname.updated.report
 
 Following the implementation of the rare caller pipeline, it is recommended to review the concordance between ZCall and Opticall − concordance is expected to be high (>99%). 
  
-#####Define names and locations of important files and software
+#####Define names and locations of important files and software:
 
 ```{UNIX}
-echo 
-"root=/path/to/rootname
+printf "root=/path/to/rootname
 pheno=/path/to/external_pheno.phe
 covar=/path/to/covariates.cov
 genders=/path/to/external_genders.txt
 names=/path/to/external_individual_names.txt
-keeps=/path/to/samples_to_keep.txt
+keeps=/path/to/samples_to_keep.txt 
 excludes=/path/to/samples_to_exclude.txt
 insnps=/path/to/SNPs_to_keep.txt
 outsnps=/path/to/SNPs_to_exclude.txt
-plink=/path/to/plink2"
-
-> Config.conf
-
+plink=/path/to/plink2" > Config.conf 
 ```
 
 File formats are the [PLINK file formats] (http://pngu.mgh.harvard.edu/~purcell/plink/data.shtml).
