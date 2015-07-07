@@ -431,13 +431,13 @@ Both scripts require the same IDs to be in $root.pca.evec and $pheno, and look a
 *Short version (outputs the variance explained by each component and its significance when added to a model including the previous components):*
 
 ```{R}	
-./R --file=PC--VS--OUTCOME_IN_R_SHORT.R --args $root.pop_strat $pheno
+./R --file=PC-VS-OUTCOME_IN_R_SHORT.R --args $root.pop_strat $pheno
 ```
 
 *Long version (outputs the full results of the linear model, adding each component in turn):*
 
 ```{R}
-./R --file= PC--VS--OUTCOME_IN_R_FULL.R --args $root.pop_strat $pheno
+./R --file= PC-VS-OUTCOME_IN_R_FULL.R --args $root.pop_strat $pheno
 ```
 
 _Run SmartPCA again to remove outliers_ 
@@ -520,7 +520,7 @@ smartpca.perl \
 Calculate association (short version):
 
 ```{R}	
-./R --file=PC--VS--OUTCOME_IN_R_SHORT.R --args $root.PCS_for_covariates
+./R --file=PC-VS-OUTCOME_IN_R_SHORT.R --args $root.PCS_for_covariates
 ```
 
 Include components significantly associated with outcome as covariates in the final analysis, or add PCs in turn until inflation falls to an accepted level (lambda ≈ 1).
