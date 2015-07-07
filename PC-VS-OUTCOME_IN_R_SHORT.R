@@ -11,6 +11,6 @@ options(scipen=999)
 for (i in 1:100) {
 DATA<-PCAPHENO[,c(3:(i+2),103)]
 DATA2<-PCAPHENO[,c(3:(i+1),103)]
-print(c(i, summary(lm(colnames(PHENOTYPE)[3] ~ ., DATA))$coefficients[(i+1),4], summary(lm(colnames(PHENOTYPE)[3] ~ ., DATA))$r.squared - summary(lm(colnames(PHENOTYPE)[3] ~ ., DATA2))$r.squared))
+print(c(i, summary(lm(PCAPHENO[,103] ~ ., DATA))$coefficients[(i+1),4], summary(lm(PCAPHENO[,103] ~ ., DATA))$r.squared - summary(lm(PCAPHENO[,103] ~ ., DATA2))$r.squared))
 }
 sink()
