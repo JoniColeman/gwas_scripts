@@ -577,7 +577,7 @@ $plink \
 _Exclude samples identified as outliers_ 
 
 ```{R}
-R --file=Id_hets.R --args $root
+R --file=IdHets.R --args $root.het
 ```
 
 ```{PLINK}
