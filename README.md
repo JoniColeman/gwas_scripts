@@ -418,10 +418,10 @@ Inputs explained:
   
 _Minor edit to allow import into R_
 
-Remove leading tab. 
+Remove leading tab and split ID into two columns. 
 
 ```{sed}
-sed -i 's/^[ \t]*//' $root.pop_strat.pca.evec
+sed -i -e 's/^[ \t]*//' -e 's/:/ /g' $root.pop_strat.pca.evec
 ```
 
 _Calculate association between PCs and outcome measure in R_
