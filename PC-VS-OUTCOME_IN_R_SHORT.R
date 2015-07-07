@@ -8,10 +8,9 @@ PCAPHENO<-merge(PCAEVEC,PHENOTYPE)
 sink(paste(root,"PC_Output_Associations.txt",sep=""))
 writeLines(c(" PC P  R-squared"))
 options(scipen=999)
-phenoname <- colnames(PHENOTYPE)[3]
 for (i in 1:100) {
 DATA<-PCAPHENO[,c(3:(i+2),103)]
 DATA2<-PCAPHENO[,c(3:(i+1),103)]
-print(c(i, summary(lm(paste(phenoname," ~ .\, DATA",sep="")))$coefficients[(i+1),4], summary(lm(paste(phenoname," ~ .\, DATA",sep="")))$r.squared - summary(lm(paste(phenoname," ~ .\, DATA2",sep="")))$r.squared))
+print(c(i, summary(lm(colnames(PHENOTYPE)[3] ~ ., DATA))$coefficients[(i+1),4], summary(lm(colnames(PHENOTYPE)[3] ~ ., DATA))$r.squared - summary(lm(colnames(PHENOTYPE)[3] ~ ., DATA2))$r.squared))
 }
 sink()
