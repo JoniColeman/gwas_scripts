@@ -8,11 +8,11 @@ PCAPHENO<-merge(PCAEVEC,PHENOTYPE)
 sink(paste(root,".PC_Output_Associations_SHORT.txt",sep=""))
 writeLines(c(" PC P  R-squared"))
 options(scipen=999)
-DATA<-PCAPHENO[,3]
+DATA<-as.data.frame(PCAPHENO[,3])
 print(c(1, summary(lm(PCAPHENO[,104] ~ PC1, data=DATA))$coefficients[2,4], summary(lm(PCAPHENO[,104] ~ ., data=DATA))$r.squared))
 for (i in 2:100) {
-DATA<-PCAPHENO[,c(3:(i+2))]
-DATA2<-PCAPHENO[,c(3:(i+1))]
+DATA<-as.data.frame(PCAPHENO[,c(3:(i+2))])
+DATA2<-as.data.frame(PCAPHENO[,c(3:(i+1))])
 print(c(i, summary(lm(PCAPHENO[,104] ~ ., data=DATA))$coefficients[(i+1),4], summary(lm(PCAPHENO[,104] ~ ., data=DATA))$r.squared - summary(lm(PCAPHENO[,104] ~ ., data=DATA2))$r.squared))
 }
 sink()
