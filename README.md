@@ -464,7 +464,7 @@ _Plot principal components in R_
 
 Plot before and after outlier exclusion to allow visual inspection of which samples are dropped
 
-Plot first component against second in R and colour by phenotype
+Plot first component against second in R and colour by phenotype - this requires [ggplot2](http://ggplot2.org/) to be installed.
 
 ```{sed}
 sed -i -e 's/^[ \t]*//' -e 's/:/ /g' $root.pop_strat_outliers.pca.evec
