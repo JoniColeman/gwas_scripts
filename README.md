@@ -583,13 +583,13 @@ R --file=IdHets.R --args $root.het
 ```{PLINK}
 $plink \
 --bfile $root.LD_pop_strat \
---remove $root.LD_het_outliers_sample_exclude \
+--remove $root.het.LD_het_outliers_sample_exclude \
 --make-bed \
 --out $root.LD_het_cleaned
 
 $plink \
 --bfile $root.pop_strat \
---remove $root.LD_het_outliers_sample_exclude \
+--remove $root.het.LD_het_outliers_sample_exclude \
 --make-bed \
 --out $root.het_cleaned
 ```
