@@ -447,9 +447,9 @@ Set –m 5 and –t x (where ***x*** is the number of PCs significantly associat
 
 ```{perl}
 smartpca.perl \
--i $root.pop_strat_outliers.eigenstratgeno \
--a $root.pop_strat_outliers.snp \
--b $root.pop_strat_outliers.ind \
+-i $root.pop_strat.eigenstratgeno \
+-a $root.pop_strat.snp \
+-b $root.pop_strat.ind \
 -o $root.pop_strat_outliers.pca \
 -p $root.pop_strat_outliers.plot \
 -e $root.pop_strat_outliers.eval \
@@ -457,7 +457,7 @@ smartpca.perl \
 -m 5 \
 -t x \
 -k 100 \
--s 6 \
+-s 6
 ```
 
 _Plot principal components in R_
