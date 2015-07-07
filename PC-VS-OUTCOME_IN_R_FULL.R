@@ -6,9 +6,8 @@ colnames(PCAEVEC)<-c("ID","PC1", "PC2", "PC3", "PC4", "PC5", "PC6", "PC7", "PC8"
 PHENOTYPE<-read.table(pheno,head=T)
 PCAPHENO<-merge(PCAEVEC,PHENOTYPE)
 sink(paste(root,"PC_Output_Associations.txt",sep=""))
-phenoname <- colnames(PHENOTYPE)[3]
 for (i in 1:100) {
 DATA<-PCAPHENO[,c(3:(i+2),103)]
-print(summary(lm(paste(phenoname," ~ .","\,"," DATA",sep=""))))
+print(summary(lm(colnames(PHENOTYPE)[3] ~ ., DATA)))
 }
 sink()
