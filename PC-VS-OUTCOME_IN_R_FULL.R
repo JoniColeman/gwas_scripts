@@ -8,6 +8,6 @@ PCAPHENO<-merge(PCAEVEC,PHENOTYPE)
 sink(paste(root,".PC_Output_Associations_FULL.txt",sep=""))
 for (i in 1:100) {
 DATA<-PCAPHENO[,c(3:(i+2),104)]
-print(summary(lm(DATA[,dim(DATA)[2]] ~ ., DATA[,-(dim(DATA)[2]))))
+print(summary(lm(DATA[,dim(DATA)[2]] ~ ., DATA[,-dim(DATA)[2]])))
 }
 sink()
