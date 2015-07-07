@@ -503,7 +503,13 @@ _Re-run to assess which components to include as covariates in the final analysi
 Run ConvertF
 
 ```{perl}
-convertf -p parfile_covariates.par
+convertf -p <(printf "genotypename: $root.LD_pop_strat.bed
+snpname: $root.LD_pop_strat.bim
+indivname: $root.LD_pop_strat.fam
+outputformat: EIGENSTRAT
+genotypeoutname: $root.PCS_for_covariates.eigenstratgeno
+snpoutname: $root.PCS_for_covariates.snp
+indivoutname: $root.PCS_for_covariates.ind")
 ```
 
 Run SmartPCA:
