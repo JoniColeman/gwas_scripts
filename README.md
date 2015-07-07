@@ -938,7 +938,7 @@ _Run MLMA for X chromosome_
 --bfile $root.post_imputation_final \
 --chr X \
 --make-bed \
---out $root.post_imputation_final_X \
+--out $root.post_imputation_final_X
 ```
 ```{GCTA}
 ./gcta \
