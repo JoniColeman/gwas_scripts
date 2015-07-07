@@ -466,8 +466,14 @@ Plot before and after outlier exclusion to allow visual inspection of which samp
 
 Plot first component against second in R and colour by phenotype
 
+```{sed}
+sed -i -e 's/^[ \t]*//' -e 's/:/ /g' $root.pop_strat_outliers.pca.evec
+```
+
 ```{R}
-./R --file=PlotPCs.R --args $root PC1 PC2
+./R --file=PlotPCs.R --args $root.pop_strat PC1 PC2
+
+./R --file=PlotPCs.R --args $root.pop_strat_outliers PC1 PC2
 ```
 
 This script can be modified to plot any of the first 100 components against each other by changing PC1 and PC2 above. The design of the plot is extremely modifiable - see [http://docs.ggplot2.org/current/].
