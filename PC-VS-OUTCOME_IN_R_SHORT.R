@@ -9,7 +9,7 @@ sink(paste(root,".PC_Output_Associations_SHORT.txt",sep=""))
 writeLines(c(" PC P  R-squared"))
 options(scipen=999)
 DATA<-PCAPHENO[,3]
-print(c(i, summary(lm(PCAPHENO[,104] ~ ., DATA))$coefficients[(i+1),4], summary(lm(PCAPHENO[,104] ~ ., DATA))$r.squared))
+print(c(1, summary(lm(PCAPHENO[,104] ~ ., DATA))$coefficients[2,4], summary(lm(PCAPHENO[,104] ~ ., DATA))$r.squared))
 for (i in 2:100) {
 DATA<-PCAPHENO[,c(3:(i+2))]
 DATA2<-PCAPHENO[,c(3:(i+1))]
