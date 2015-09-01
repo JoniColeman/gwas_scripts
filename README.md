@@ -24,7 +24,7 @@ The protocol runs in a UNIX environment, and makes use of some of the basic soft
 
 #####Recalling and rare-variant calling
 
-Not covered by this protocol, see http://confluence.brc.iop.kcl.ac.uk:8090/x/4AAm, which presents best-practice for recalling the raw genotype data using Illumina GenomeStudio, and https://github.com/KHP-Informatics/chip_gt, which implements and compares the results of [ZCall] (https://github.com/jigold/zCall) and [Opticall] (https://www.sanger.ac.uk/resources/software/opticall/).
+Not covered by this protocol, see http://confluence.brc.iop.kcl.ac.uk:8090/x/4AAm, which presents best-practice for recalling the raw genotype data using Illumina GenomeStudio, and https://github.com/KHP-Informatics/chip_gt, which implements and compares the results of [ZCall] (https://github.com/jigold/zCall) and [Opticall] (https://www.sanger.ac.uk/resources/software/opticall/). [This Nature Protocols paper](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4441213/)  is also very good. 
 
 #####Reformat of data from the rare caller pipeline
 
@@ -1257,6 +1257,8 @@ R --file=QQPlotinR.R
 [Genotype recalling pipeline](http://confluence.brc.iop.kcl.ac.uk:8090/x/4AAm)
 
 [Rare varaint recalling pipeline](http://core.brc.iop.kcl.ac.uk/2013/04/08/exome-chip-rare-caller-pipeline/)
+
+[Alternative recalling and quality control pipeline](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4441213/)
 
 [PLINK 1.07](http://pngu.mgh.harvard.edu/~purcell/plink/)
 
