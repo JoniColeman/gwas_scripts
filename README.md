@@ -49,11 +49,7 @@ excludes=/path/to/samples_to_exclude.txt
 insnps=/path/to/SNPs_to_keep.txt
 outsnps=/path/to/SNPs_to_exclude.txt
 plink=/path/to/plink2" > Config.conf 
-
-source ./Config.conf
-
 ```
-
 
 File formats are the [PLINK file formats] (http://pngu.mgh.harvard.edu/~purcell/plink/data.shtml).
 
