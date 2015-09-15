@@ -12,7 +12,7 @@ $plink \
 #Remove samples with completeness < 90%
 
 $plink \
---bfile $root.common_SNP90 \
+--bfile $root.common_SNP$1 \
 --mind $genomind_1 \
 --make-bed \
 --out $root.common_sample$1.SNP$1
