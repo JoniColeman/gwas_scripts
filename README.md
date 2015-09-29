@@ -1,7 +1,7 @@
 ﻿
 
 # gwas_scripts
-###### GWAS codebook (Coleman et al, Under Review), version 0.1.1
+###### GWAS codebook (Coleman et al, In Press,  BiFG), version 1.0.0
 ##### Please address questions, comments and improvements to Joni Coleman, jonathan[dot]coleman[at]kcl[dot]ac[dot]uk
 
 
