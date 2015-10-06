@@ -4,7 +4,7 @@
 ###### GWAS codebook (Coleman et al, 2015,  Briefings in Functional Genomics), version 1.0.0
 ##### Please address questions, comments and improvements to Joni Coleman, jonathan[dot]coleman[at]kcl[dot]ac[dot]uk
 ##### If you use the scripts and advice herein, please consider citing our paper, the full text of which is available on the publisher's website: 
-Quality control, imputation and analysis of genome-wide genotyping data from the Illumina HumanCoreExome microarray. Jonathan R. I. Coleman; Jack Euesden; Hamel Patel; Amos A. Folarin; Stephen Newhouse; Gerome Breen. Briefings in Functional Genomics 2015; [doi:10.1093/bfgp/elv037](doi.org/10.1093/bfgp/elv037)
+#####Quality control, imputation and analysis of genome-wide genotyping data from the Illumina HumanCoreExome microarray. Jonathan R. I. Coleman; Jack Euesden; Hamel Patel; Amos A. Folarin; Stephen Newhouse; Gerome Breen. Briefings in Functional Genomics 2015; [doi:10.1093/bfgp/elv037](doi.org/10.1093/bfgp/elv037)
 
 
 
