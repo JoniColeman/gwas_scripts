@@ -1273,7 +1273,7 @@ R --file=QQPlotinR.R
 
 [R](http://www.r-project.org/)
 
-[EIGENSOFT](http://www.hsph.harvard.edu/alkes-price/software/)
+[EIGENSOFT, EAGLE, HAPLOSNP...  JUST SO MUCH GOOD STUFF](http://www.hsph.harvard.edu/alkes-price/software/)
 
 [IMPUTE2](https://mathgen.stats.ox.ac.uk/impute/impute_v2.html)
 
