@@ -11,6 +11,7 @@ The scripts in this repo are referenced in the publication referenced above, whi
 
 
 This pipeline is designed to provide a useful resource for using genome-wide data from low-coverage arrays and smaller projects. As projects grow larger and more complex, it may be valuable to consult software creators' websites to seek more sophisticated analysis methods. A brief list of these is provided at the end of this document - I will gladly consider suggested inclusions. 
+
 For the quality control, imputation and analysis of large scale genome-wide genotype data, it is highly recommended to look at Ricopili, the pipeline of the Psychiatric Genomics Consortium, which is currently being deposited in [this repo](https://github.com/Nealelab/ricopili). All credit for Ricopili goes to its creators.
 
 Within this protocol, the following software is used:
