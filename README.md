@@ -7,8 +7,10 @@
 #####Quality control, imputation and analysis of genome-wide genotyping data from the Illumina HumanCoreExome microarray. Jonathan R. I. Coleman; Jack Euesden; Hamel Patel; Amos A. Folarin; Stephen Newhouse; Gerome Breen. Briefings in Functional Genomics 2015; [doi:10.1093/bfgp/elv037](http://bfg.oxfordjournals.org/content/early/2015/10/05/bfgp.elv037)
 
 
-
 The scripts in this repo are referenced in the publication referenced above, which provides a straight-forward guide to the quality control, imputation and analysis of genome-wide genotype data. Scripts can be tested using the toy PLINK dataset kindly provided by Shaun Purcell on the PLINK 1.07 website: [example.zip](http://pngu.mgh.harvard.edu/~purcell/plink/dist/example.zip).
+
+
+This pipeline is designed to provide a useful resource for using genome-wide data from low-coverage arrays and smaller projects. As projects grow larger and more complex, it may be valuable to consult software creators' websites to seek more sophisticated analysis methods. For the quality control, imputation and analysis of large scale genome-wide genotype data, it is highly recommended to look at Ricopili, the pipeline of the Psychiatric Genomics Consortium, which is currently being deposited in [this repo](https://github.com/Nealelab/ricopili). All credit for Ricopili goes to its creators.
 
 Within this protocol, the following software is used:
 
