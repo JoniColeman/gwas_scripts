@@ -1263,7 +1263,7 @@ R --file=QQPlotinR.R
 
 [Genotype recalling pipeline](http://confluence.brc.iop.kcl.ac.uk:8090/x/4AAm)
 
-[Rare varaint recalling pipeline](http://core.brc.iop.kcl.ac.uk/2013/04/08/exome-chip-rare-caller-pipeline/)
+[Rare variant recalling pipeline](http://core.brc.iop.kcl.ac.uk/2013/04/08/exome-chip-rare-caller-pipeline/)
 
 [Alternative recalling and quality control pipeline](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4441213/)
 
@@ -1273,7 +1273,7 @@ R --file=QQPlotinR.R
 
 [R](http://www.r-project.org/)
 
-[EIGENSOFT, EAGLE, HAPLOSNP...  JUST SO MUCH GOOD STUFF](http://www.hsph.harvard.edu/alkes-price/software/)
+[EIGENSOFT, EAGLE, HAPLOSNP, LDScore...  JUST SO MUCH GOOD STUFF](http://www.hsph.harvard.edu/alkes-price/software/)
 
 [IMPUTE2](https://mathgen.stats.ox.ac.uk/impute/impute_v2.html)
 
@@ -1287,6 +1287,9 @@ R --file=QQPlotinR.R
 
 [GWASRAP - Post-GWAS annotation](http://jjwanglab.org/gwasrap)
 
+[PRSice - Polygenic Risk Scoring software](www.prsice.info)
+
+[GCTA - Software suite for mixed linear modelling and heritability analyses](http://cnsgenomics.com/software/gcta/)
 
 # Acknowledgements
 
