@@ -1287,7 +1287,7 @@ R --file=QQPlotinR.R
 
 [GWASRAP - Post-GWAS annotation](http://jjwanglab.org/gwasrap)
 
-[PRSice - Polygenic Risk Scoring software](prsice.info)
+[PRSice - Polygenic Risk Scoring software](http://prsice.info)
 
 [GCTA - Software suite for mixed linear modelling and heritability analyses](http://cnsgenomics.com/software/gcta/)
 
