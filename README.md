@@ -55,7 +55,8 @@ keeps=/path/to/samples_to_keep.txt
 excludes=/path/to/samples_to_exclude.txt
 insnps=/path/to/SNPs_to_keep.txt
 outsnps=/path/to/SNPs_to_exclude.txt
-plink=/path/to/plink2" > Config.conf 
+plink=/path/to/plink2
+R=/path/to/R" > Config.conf 
 ```
 
 File formats are the [PLINK file formats] (http://pngu.mgh.harvard.edu/~purcell/plink/data.shtml).
@@ -349,7 +350,7 @@ $plink \
 _Calculate average IBD per individual using R, output outliers (defined as more than ***sigma*** standard deviations above the mean, as provided by the user):_
 
 ```{R}
-./R --file=IndividualIBD.R --args $root [sigma]
+$R --file=IndividualIBD.R --args $root [sigma]
 ```
 
 Exclude outliers from both LD-stripped and all SNP binary files
@@ -438,13 +439,13 @@ Both scripts require the same IDs to be in $root.pca.evec and $pheno, and look a
 *Short version (outputs the variance explained by each component and its significance when added to a model including the previous components):*
 
 ```{R}	
-./R --file=PC-VS-OUTCOME_IN_R_SHORT.R --args $root.pop_strat $pheno
+$R --file=PC-VS-OUTCOME_IN_R_SHORT.R --args $root.pop_strat $pheno
 ```
 
 *Long version (outputs the full results of the linear model, adding each component in turn):*
 
 ```{R}
-./R --file= PC-VS-OUTCOME_IN_R_FULL.R --args $root.pop_strat $pheno
+$R --file= PC-VS-OUTCOME_IN_R_FULL.R --args $root.pop_strat $pheno
 ```
 
 _Run SmartPCA again to remove outliers_ 
@@ -478,9 +479,9 @@ sed -i -e 's/^[ \t]*//' -e 's/:/ /g' $root.pop_strat_outliers.pca.evec
 ```
 
 ```{R}
-./R --file=PlotPCs.R --args $root.pop_strat 1 2
+$R --file=PlotPCs.R --args $root.pop_strat 1 2
 
-./R --file=PlotPCs.R --args $root.pop_strat_outliers 1 2
+$R --file=PlotPCs.R --args $root.pop_strat_outliers 1 2
 ```
 
 This script can be modified to plot any of the first 100 components against each other by changing 1 and 2 above. The design of the plot is extremely modifiable - see [http://docs.ggplot2.org/current/].
@@ -539,7 +540,7 @@ smartpca.perl \
 Calculate association (short version):
 
 ```{R}	
-./R --file=PC-VS-OUTCOME_IN_R_SHORT.R --args $root.PCS_for_covariates
+$R --file=PC-VS-OUTCOME_IN_R_SHORT.R --args $root.PCS_for_covariates
 ```
 
 Include components significantly associated with outcome as covariates in the final analysis, or add PCs in turn until inflation falls to an accepted level (lambda ≈ 1).
@@ -838,7 +839,7 @@ sh ./DropDuplicatedPositions.sh
 *Generate covariates file, merging $covar and $root.dataname_pop_strat_includes.pca.evec (output from SMARTPCA) files*
 
 ```{R}
-./R --file=Get_Covariates.R --args $root $covar
+$-R --file=Get_Covariates.R --args $root $covar
 ```
 
 Relabels header and adds additional covariates (.pca.evec contains all PCs included in the SmartPCA analysis) 
@@ -1038,8 +1039,8 @@ head -1000001 $root.post_imputation_final_analysis.assoc.logisitic >  $root.post
 _Run Manhattan plot and QQ plot scripts in R_ 
 
 ```{R}
-./R --file ManhattanPlotinR.R --args $root
-./R --file QQPlotinR.R --args $root
+$R --file ManhattanPlotinR.R --args $root
+$R --file QQPlotinR.R --args $root
 ```
 
 QQ plot currently plots top 10% of the data - this can be altered by changing the "frac" option
