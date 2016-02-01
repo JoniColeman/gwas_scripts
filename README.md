@@ -681,7 +681,11 @@ To:
 ```
 *Modify scripts in impute2_examples folder (prototype_imputation_job_posterior_sampled_haps.sh master_imputation_script_posterior_sampled_haps.sh and submit_impute_jobs_to_cluster.R) to fit personal needs.*
 
-Likely to need to limit number of jobs submitted to remain within local SunGridEngine rules – liaise with local system administrator to establish local best practice.
+Likely to need to limit number of jobs submitted to remain within local SunGridEngine rules – liaise with local system administrator to establish local best practice. Also likely to need to amend script to allow 5Mb jobs to run - for example, to increase virtual memory allowance to 15Gb, add the following to the header of the prototype_imputation_job_posterior_sampled_haps.sh script:
+
+```bash
+#$ -l h_vmem=15G
+```
 
 *Submit jobs*
 
