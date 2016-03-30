@@ -585,11 +585,16 @@ _Obtain 1KG Phase 1 data from PLINK2 website_
 wget ftp://climb.genomics.cn/pub/10.5524/100001_101000/100116/1kg_phase1_all.tar.gz
 ```
 
+Note code below creates numerical phenotypes for the 1KG populations. **CHANGE THESE IF THEY WIL OVERLAP WITH YOUR PHENOTYPE DATA!**
+
 _Obtain 1KG Population info from 1KG_
 
 ```{bash}
 wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_g1k.ped
-awk '{print 0, $2, $5}' 20130606_g1k.ped > 1KG_Phenos.txt 
+
+grep -f <(awk '{print $2}' 1kg_phase1_all.fam) <(awk 'NR > 1 {print 0, $2, $7}' 20130606_g1k.ped) > 1KG_Phenos.txt
+
+sed -i -e 's/ASW/3/g' -e 's/CEU/4/g' -e 's/CHB/5/g' -e 's/CHS/6/g' -e 's/CLM/7/g' -e 's/FIN/8/g' -e 's/GBR/10/g' -e 's/IBS/11/g' -e 's/JPT/12/g' -e 's/LWK/13/g' -e 's/MXL/14/g' -e 's/PUR/15/g' -e 's/TSI/16/g' -e 's/YRI/17/g' 1KG_Phenos.txt 
 ```
 
 Provided your data has sufficient common variants (as with most microarrays), you can be fairly brutal with selecting variants for ancestry estimation. Ultimately, good estimation can be achieved with ~20K variants (see [Price et al, 2006](http://www.ncbi.nlm.nih.gov/pubmed/16862161)).
@@ -623,7 +628,7 @@ _Extract rs IDs from 1KG (and add phenotypes)_
 $plink \
 --bfile 1kg_phase1_all \
 --extract $root.IBD_cleaned.rsid_names.txt \
---update-pheno 1KG_Phenos.txt \
+--pheno 1KG_Phenos.txt \
 --make-bed \
 --out 1kg_phase1_all.rsids.autosomal
 ```
@@ -739,6 +744,15 @@ smartpca.perl \
 -w $root.1kg.LD_poplist.txt \
 -m 0
 ```
+
+Note that the command below relabels the phenotype column as xCHANGE, where x is the phenotype, and then relabels the 1KG populations with their names for graphing. **Modify the sed command to allow your samples to be labelled usefully!** 
+
+_Modify $root.1kg.LD_pop_strat.pca.evec for R_
+
+```{bash}
+awk 'NR > 1 {print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12"CHANGE"}' $root.1kg.LD_pop_strat.pca.evec > $root.1kg.LD_pop_strat.pca.evec_RENAMED
+
+sed -i -e 's/3CHANGE/ASW/g' -e 's/4CHANGE/CEU/g' -e 's/5CHANGE/CHB/g' -e 's/6CHANGE/CHS/g' -e 's/7CHANGE/CLM/g' -e 's/8CHANGE/FIN/g' -e 's/10CHANGE/GBR/g' -e 's/11CHANGE/IBS/g' -e 's/12CHANGE/JPT/g' -e 's/13CHANGE/LWK/g' -e 's/14CHANGE/MXL/g' -e 's/15CHANGE/PUR/g' -e 's/16CHANGE/TSI/g' -e 's/17CHANGE/YRI/g' $root.1kg.LD_pop_strat.pca.evec_RENAMED
 
 _Plot PCs_
 
