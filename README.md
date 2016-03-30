@@ -743,7 +743,7 @@ smartpca.perl \
 _Plot PCs_
 
 ```{bash}
-RScript Plot_PCs_1KG.R $root
+RScript PC_Plot_1KG.R $root
 ```
 
 #####Heterozygosity Test
