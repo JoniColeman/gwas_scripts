@@ -569,8 +569,183 @@ _Use keepids.txt at this section:_
     zcat genotypes_hapmap_r28_b37_YRI.impute.gz | wc -l
     3862842
 
-More populations now exist than those listed in Flutre’s script; these can be obtained in the same manner.	
+More populations now exist than those listed in Flutre’s script; these can be obtained in the same manner.
+
+#####Alternative - Use 1000 Genomes Phase 1 data to achieve the same
+
+Much the same process can be used to assess sample ethnicity by projecting on PCs from the 1000 Genomes samples. 
+
+From $root.IBD_cleaned:
+
+_Obtain 1KG Phase 1 data from PLINK2 website_
+
+**WARNING: FILE > 1GB**
+
+```{bash}
+wget ftp://climb.genomics.cn/pub/10.5524/100001_101000/100116/1kg_phase1_all.tar.gz
+```
+
+_Obtain 1KG Population info from 1KG_
+
+```{bash}
+wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_g1k.ped
+awk '{print 0, $2, $5}' 20130606_g1k.ped > 1KG_Phenos.txt 
+```
+
+Provided your data has sufficient common variants (as with most microarrays), you can be fairly brutal with selecting variants for ancestry estimation. Ultimately, good estimation can be achieved with ~20K variants (see [Price et al, 2006](http://www.ncbi.nlm.nih.gov/pubmed/16862161)).
+
+_Limit files to SNPs with rs IDs_
+
+```{bash}
+fgrep rs $root.IBD_cleaned.bim > $root.IBD_cleaned.rsids.txt
+```
  
+_Get rs ID variant names_
+
+```{bash}
+awk '{print $2}' $root.IBD_cleaned.rsids.txt > $root.IBD_cleaned.rsid_names.txt
+```
+
+_Extract rs IDs from root_
+
+```{PLINK}
+$plink \
+--bfile $root.IBD_cleaned \
+--extract $root.IBD_cleaned.rsid_names.txt \
+--chr 1-22 \
+--make-bed \
+--out $root.IBD_cleaned.rsids.autosomal
+```
+
+_Extract rs IDs from 1KG (and add phenotypes)_
+
+```{PLINK}
+$plink \
+--bfile 1kg_phase1_all \
+--extract $root.IBD_cleaned.rsid_names.txt \
+--update-pheno 1KG_Phenos.txt \
+--make-bed \
+--out 1kg_phase1_all.rsids.autosomal
+```
+
+_Obtain SNPs present in both files_
+
+```{bash}
+awk '{print $2}' 1kg_phase1_all.rsids.autosomal.bim > 1kg_phase1_all.rsids_names.txt
+```
+
+_Extract 1KG SNPs from root_
+
+```{PLINK}
+$plink \
+--bfile $root.IBD_cleaned.rsids.autosomal \
+--extract 1kg_phase1_all.rsids_names.txt \
+--make-bed \
+--out $root.IBD_cleaned.intersection
+```
+
+_Dry run bmerge to identify SNPs PLINK will fail on_
+
+```{PLINK}
+$plink \
+--bfile $root.IBD_cleaned.intersection \
+--bmerge 1kg_phase1_all.rsids.autosomal \
+--merge-mode 6 \
+--out $root.1KG.IBD_cleaned_failures
+```
+
+_Add variants with multiple positions to missnp_
+
+```{bash}
+fgrep \'rs $root.1KG.IBD_cleaned_failures.log |\
+awk '{print $7}' |\
+sed -e "s/'//g" -e "s/.//g" > $root.1KG.IBD_cleaned_failures.multiple.positions.txt
+
+cat $root.1KG.IBD_cleaned_failures.missnp $root.1KG.IBD_cleaned_failures.multiple.positions.txt > $root.1KG.IBD_cleaned_failures.multiple.positions.missnp
+```
+
+_Exclude mismatched SNPs and variants with multiple positions_
+
+```{PLINK}
+$plink \
+--bfile $root.IBD_cleaned.intersection \
+--exclude $root.1KG.IBD_cleaned_failures.multiple.positions.missnp \
+--make-bed \
+--out $root.IBD_cleaned.intersection_for_merge
+```
+
+_Merge root and 1KG_
+
+```{PLINK}
+--bfile $root.IBD_cleaned.intersection_for_merge \
+--bmerge 1kg_phase1_all.rsids.autosomal \
+--out $root.1kg.pop_strat
+```
+
+_Filter missing variants, rare variants and HWE_
+
+```{PLINK}
+$plink \
+--bfile $root.1kg.pop_strat \
+--geno 0.01 \
+--maf 0.01 \
+--hwe 0.0001 \
+--make-bed \
+--out $root.1kg.pop_strat.for_prune
+```
+
+_LD Pruning_
+
+```{PLINK}
+--bfile $root.1kg.pop_strat.for_prune \
+--indep-pairwise 1500 150 0.2 \
+--out $root.1kg.pop_strat.prune
+```
+```{PLINK}
+--bfile $root.1kg.pop_strat.for_prune \
+--extract $root.1kg.pop_strat.prune.prune.in \
+--out $root.1kg.LD_pop_strat
+```
+
+_Run convertf to make EIGENSTRAT file_
+
+```{perl}
+convertf -p <(printf "genotypename: $root.1kg.LD_pop_strat.bed
+             snpname: $root.1kg.LD_pop_strat.bim
+             indivname: $root.1kg.LD_pop_strat.fam
+             outputformat: EIGENSTRAT
+             genotypeoutname: $root.1kg.LD_pop_strat.eigenstratgeno
+             snpoutname: $root.1kg.LD_pop_strat.snp
+             indivoutname: $root.1kg.LD_pop_strat.ind")
+```
+
+_Generate poplist for projection_
+
+```{bash}
+awk '{print $3}' 1KG_Phenos.txt | sort | uniq > $root.1kg.LD_poplist.txt
+```
+
+_Run Smartpca, projecting on 1KG samples only_
+
+```{perl}
+smartpca.perl \
+-i $root.1kg.LD_pop_strat.eigenstratgeno \
+-a $root.1kg.LD_pop_strat.snp \
+-b $root.1kg.LD_pop_strat.ind \
+-o $root.1kg.LD_pop_strat.pca \
+-p $root.1kg.LD_pop_strat.plot \
+-e $root.1kg.LD_pop_strat.eigenvalues \
+-l $root.1kg.LD_pop_strat.log \
+-w $root.1kg.LD_poplist.txt \
+-m 0
+```
+
+_Plot PCs_
+
+```{bash}
+RScript Plot_PCs_1KG.R $root
+```
+
 #####Heterozygosity Test
 
 _Test for unusual patterns of genome-wide heterogeneity in LD-pruned data_
