@@ -1,6 +1,6 @@
 args <- commandArgs(TRUE)
 root <- args[1]
-PCAEVEC<-read.table(paste(root,".1kg.LD_pop_strat.pca.evec",sep=""), head=T)
+PCAEVEC<-read.table(paste(root,".1kg.LD_pop_strat.pca.evec_RENAMED",sep=""), head=T)
 library(ggplot2)
 pdf(paste(root,"1kg.LD_pop_strat_PCA.pdf",sep=""))
 with(PCAEVEC, qplot(PC1,PC2,colour=Pop))
