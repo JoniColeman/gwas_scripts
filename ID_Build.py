@@ -317,7 +317,7 @@ def main():
             print 'Match:'
             print hg_38_score, 'out of', hg_38_length
     else:
-        print 'Give me a file please'
+        print 'Give me a PLINK .bim file please. Chromosome 6, not pruned for preference'
 
 # This is the standard boilerplate that calls the main() function.
 if __name__ == '__main__':
