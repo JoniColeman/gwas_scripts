@@ -1452,6 +1452,12 @@ R --file=ManhattanPlotinR.R
 R --file=QQPlotinR.R
 ```
 
+#### ID_Build.py: Python script for quickly identifying the genome build of an unknown PLINK binary.
+
+**Usage: ID_Build.py**
+```{bash}
+python ID_Build.py <Chromosome6.bim>
+```
 
 # Valuable web resources
 
