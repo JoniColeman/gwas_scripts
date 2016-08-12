@@ -1456,7 +1456,13 @@ R --file=QQPlotinR.R
 
 **Usage: ID_Build.py**
 ```{bash}
-python ID_Build.py <Chromosome6.bim>
+$plink \
+--bfile $root \
+--chr 6 \
+--make-bed \
+--out $root.chr6
+
+python ID_Build.py $root.chr6.bim
 ```
 
 # Valuable web resources
