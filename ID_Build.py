@@ -2,6 +2,7 @@
 
 ##Basic build identifier
 ##Run as ID_Build.py PLINK_CHROMSOME_6_FILE.bim
+##Recommendation - run binary through plink before using this script - sets A1 as minor allele
 
 import sys
 import numpy as np
