@@ -682,6 +682,7 @@ $plink \
 _Merge root and 1KG_
 
 ```{PLINK}
+$plink \
 --bfile $root.IBD_cleaned.intersection_for_merge \
 --bmerge 1kg_phase1_all.rsids.autosomal \
 --out $root.1kg.pop_strat
