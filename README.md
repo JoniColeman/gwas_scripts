@@ -703,11 +703,13 @@ $plink \
 _LD Pruning_
 
 ```{PLINK}
+$plink \
 --bfile $root.1kg.pop_strat.for_prune \
 --indep-pairwise 1500 150 0.2 \
 --out $root.1kg.pop_strat.prune
 ```
 ```{PLINK}
+$plink \
 --bfile $root.1kg.pop_strat.for_prune \
 --extract $root.1kg.pop_strat.prune.prune.in \
 --out $root.1kg.LD_pop_strat
