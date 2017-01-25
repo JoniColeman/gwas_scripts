@@ -550,6 +550,8 @@ Include components significantly associated with outcome as covariates in the fi
 Details of this procedure can be found at [Timothee Flutre's OpenWetWare]
 (http://openwetware.org/wiki/User:Timothee_Flutre/Notebook/Postdoc/2012/01/22).
 
+Note that the  http://hapmap.ncbi.nlm.nih.gov/downloads/genotypes/2010-08_phaseII+III/forward/ domain referenced by Dr Flutre has since been retired. The HapMap samples are available at ftp://ftp.ncbi.nlm.nih.gov/hapmap/genotypes/2010-08_phaseII+III/forward/
+
 _Manually extract HapMap and own cohort individual names_
 
 ```{bash}
@@ -795,6 +797,8 @@ $plink \
 ```
 
 #####Imputation
+
+___THIS CODE SHOULD BE CONSIDERED ARCHIVAL - IT IS RECOMMENDED THAT YOU NOW PERFORM IMPUTATION BY SUBMITTING YOUR DATA TO THE MICHIGAN ([https://imputationserver.sph.umich.edu/index.html]) OR SANGER ([https://imputation.sanger.ac.uk/]) IMPUTATION SERVERS, WHICH ARE FASTER AND USE MORE UP-TO-DATE REFERENCE PANELS.___
 
 *Consult [http://genome.sph.umich.edu/wiki/IMPUTE2:_1000_Genomes_Imputation_Cookbook] and [https://mathgen.stats.ox.ac.uk/impute/prephasing_and_imputation_with_impute2.tgz]*
 
