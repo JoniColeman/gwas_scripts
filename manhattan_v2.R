@@ -25,7 +25,7 @@ x2$CHR[x2$CHR=="24"]="Y"
 x2$CHR[x2$CHR=="25"]="XY"
 x2$CHR[x2$CHR=="26"]="MT"
 
-labels <- unique(x2$CHR)
+labels <- sort(unique(x2$CHR))
 wgplot(x2, pch=".", color=c(1:25), cutoffs=4:9, labels=labels )
 
 for (i in 4:20) abline(h=i, col="grey", lty="dotted")
