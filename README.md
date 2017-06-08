@@ -31,7 +31,7 @@ The protocol runs in a UNIX environment, and makes use of some of the basic soft
 
 #####Recalling and rare-variant calling
 
-Not covered by this protocol, see http://confluence.brc.iop.kcl.ac.uk:8090/x/4AAm, which presents best-practice for recalling the raw genotype data using Illumina GenomeStudio, and https://github.com/KHP-Informatics/chip_gt, which implements and compares the results of [ZCall] (https://github.com/jigold/zCall) and [Opticall] (https://www.sanger.ac.uk/resources/software/opticall/). [This Nature Protocols paper](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4441213/)  is also very good. 
+Not covered by this protocol, see http://confluence.brc.iop.kcl.ac.uk:8090/x/4AAm, which presents best-practice for recalling the raw genotype data using Illumina GenomeStudio, and https://github.com/KHP-Informatics/chip_gt, which implements and compares the results of [ZCall](https://github.com/jigold/zCall) and [Opticall](https://www.sanger.ac.uk/resources/software/opticall/). [This Nature Protocols paper](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4441213/)  is also very good. 
 
 #####Reformat of data from the rare caller pipeline
 
@@ -59,7 +59,7 @@ plink=/path/to/plink2
 R=/path/to/R" > Config.conf 
 ```
 
-File formats are the [PLINK file formats] (http://pngu.mgh.harvard.edu/~purcell/plink/data.shtml).
+File formats are the [PLINK file formats](http://pngu.mgh.harvard.edu/~purcell/plink/data.shtml).
 
 "rootname" is the prefix of the PLINK binary files obtained from the Exome-chip pipeline (i.e. the .bed file from the ZCall branch has the name "rootname_filt_Zcall_UA.bed"), and "/path/to/" is the location of these files on the computer. 
 
@@ -247,7 +247,7 @@ $plink \
 --out $root.LD_two
 ```
 
-_Exclude  high-LD and non-autosomal regions from the pruned file (see [Mike Weale's website] (https://sites.google.com/site/mikeweale))_
+_Exclude  high-LD and non-autosomal regions from the pruned file (see [Mike Weale's website](https://sites.google.com/site/mikeweale))_
 
 ```{AWK}
 awk -f highLDregions4bim_b37.awk $root.LD_two.bim > highLDexcludes
@@ -547,8 +547,7 @@ Include components significantly associated with outcome as covariates in the fi
 
 #####Optional (but useful): plot individuals on components drawn from the HapMap reference populations to assess likely ancestry groupings. 
 
-Details of this procedure can be found at [Timothee Flutre's OpenWetWare]
-(http://openwetware.org/wiki/User:Timothee_Flutre/Notebook/Postdoc/2012/01/22).
+Details of this procedure can be found at [Timothee Flutre's OpenWetWare](http://openwetware.org/wiki/User:Timothee_Flutre/Notebook/Postdoc/2012/01/22).
 
 Note that the  http://hapmap.ncbi.nlm.nih.gov/downloads/genotypes/2010-08_phaseII+III/forward/ domain referenced by Dr Flutre has since been retired. The HapMap samples are available at ftp://ftp.ncbi.nlm.nih.gov/hapmap/genotypes/2010-08_phaseII+III/forward/
 
