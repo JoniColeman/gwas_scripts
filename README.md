@@ -16,13 +16,13 @@ For the quality control, imputation and analysis of large scale genome-wide geno
 
 Within this protocol, the following software is used:
 
-•	[PLINK] (http://pngu.mgh.harvard.edu/~purcell/plink/) /  [PLINK2](https://www.cog-genomics.org/plink2)
+•	[PLINK](http://zzz.bwh.harvard.edu/plink/) /  [PLINK2](https://www.cog-genomics.org/plink2)
 
-•	[R] (http://www.r-project.org/)
+•	[R](http://www.r-project.org/)
 
-•	[EIGENSOFT] (http://www.hsph.harvard.edu/alkes-price/software/)
+•	[EIGENSOFT](http://www.hsph.harvard.edu/alkes-price/software/)
 
-•	[IMPUTE] (https://mathgen.stats.ox.ac.uk/impute/impute_v2.html)
+•	[IMPUTE](https://mathgen.stats.ox.ac.uk/impute/impute_v2.html)
 
 
 The protocol runs in a UNIX environment, and makes use of some of the basic software of the UNIX operating system. It should run on a Mac, but not in Windows. Most sections are designed to be usable simply by pasting into the command line – variables are set when each command is run, and should be straight-forward to modify.
