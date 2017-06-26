@@ -25,7 +25,7 @@ Within this protocol, the following software is used:
 •	[IMPUTE](https://mathgen.stats.ox.ac.uk/impute/impute_v2.html)
 
 
-The protocol runs in a UNIX environment, and makes use of some of the basic software of the UNIX operating system. It should run on a Mac, but not in Windows. Most sections are designed to be usable simply by pasting into the command line – variables are set when each command is run, and should be straight-forward to modify.
+The protocol runs in a UNIX environment, and makes use of some of the basic software of the UNIX operating system. It should run on a Mac, but not in Windows. An exception to this is the GCTA MLMA GWAS analyses described at the end of the protocol - such analyses are only implemented in the Linux version of GCTA. Most sections of this protocol are designed to be usable simply by pasting into the command line – variables are set when each command is run, and should be straight-forward to modify.
 
 #Procedure#
 
