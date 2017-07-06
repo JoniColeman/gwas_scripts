@@ -713,6 +713,7 @@ $plink \
 $plink \
 --bfile $root.1kg.pop_strat.for_prune \
 --extract $root.1kg.pop_strat.prune.prune.in \
+--make-bed \
 --out $root.1kg.LD_pop_strat
 ```
 
