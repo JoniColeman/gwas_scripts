@@ -757,7 +757,7 @@ _Modify $root.1kg.LD_pop_strat.pca.evec for R_
 ```{bash}
 awk 'NR > 1 {print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12"CHANGE"}' $root.1kg.LD_pop_strat.pca.evec > $root.1kg.LD_pop_strat.pca.evec_RENAMED
 
-sed -i -e 's/3CHANGE/ASW/g' -e 's/4CHANGE/CEU/g' -e 's/5CHANGE/CHB/g' -e 's/6CHANGE/CHS/g' -e 's/7CHANGE/CLM/g' -e 's/8CHANGE/FIN/g' -e 's/10CHANGE/GBR/g' -e 's/11CHANGE/IBS/g' -e 's/12CHANGE/JPT/g' -e 's/13CHANGE/LWK/g' -e 's/14CHANGE/MXL/g' -e 's/15CHANGE/PUR/g' -e 's/16CHANGE/TSI/g' -e 's/17CHANGE/YRI/g' $root.1kg.LD_pop_strat.pca.evec_RENAMED
+sed -i -e 's/13CHANGE/LWK/g' -e 's/14CHANGE/MXL/g' -e 's/15CHANGE/PUR/g' -e 's/16CHANGE/TSI/g' -e 's/17CHANGE/YRI/g' -e 's/3CHANGE/ASW/g' -e 's/4CHANGE/CEU/g' -e 's/5CHANGE/CHB/g' -e 's/6CHANGE/CHS/g' -e 's/7CHANGE/CLM/g' -e 's/8CHANGE/FIN/g' -e 's/10CHANGE/GBR/g' -e 's/11CHANGE/IBS/g' -e 's/12CHANGE/JPT/g'  $root.1kg.LD_pop_strat.pca.evec_RENAMED
 ```
 
 _Plot PCs_
