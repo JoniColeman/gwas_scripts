@@ -31,7 +31,7 @@ The protocol runs in a UNIX environment, and makes use of some of the basic soft
 
 ##### Recalling and rare-variant calling
 
-Not covered by this protocol, see http://confluence.brc.iop.kcl.ac.uk:8090/x/4AAm, which presents best-practice for recalling the raw genotype data using Illumina GenomeStudio, and https://github.com/KHP-Informatics/chip_gt, which implements and compares the results of [ZCall](https://github.com/jigold/zCall) and [Opticall](https://www.sanger.ac.uk/resources/software/opticall/). [This Nature Protocols paper](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4441213/)  is also very good. 
+Not covered by this protocol, see [this protocol](https://confluence.brc.iop.kcl.ac.uk:8493/display/PUB/Production+Version%3A+Illumina+Exome+Chip+SOP+v1.4), which presents best-practice for recalling the raw genotype data using Illumina GenomeStudio, and https://github.com/KHP-Informatics/chip_gt, which implements and compares the results of [ZCall](https://github.com/jigold/zCall) and [Opticall](https://www.sanger.ac.uk/resources/software/opticall/). [This Nature Protocols paper](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4441213/)  is also very good. 
 
 ##### Reformat of data from the rare caller pipeline
 
