@@ -17,24 +17,21 @@ PCAEVEC<-read.table(paste(root,".1kg.LD_pop_strat.pca.evec_RENAMED",sep=""), hea
 colnames(PCAEVEC) <- c("ID","PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8","PC9","PC10","Pop")
 
 ##Define colour palette
-ThousandGenomesPalette<-sequential_hcl(length(unique(PCAEVEC$Pop)))
+ThousandGenomesPalette<-heat_hcl(length(unique(PCAEVEC$Pop)), h = c(300, 75), c. = c(35, 95), l = c(15, 90), power = c(0.8, 1.2), fixup = TRUE, gamma = NULL, alpha = 1)
+ThousandGenomesPops<-c("LWK","MXL","PUR","TSI","YRI","ASW","CEU","CHB","CHS","CLM","FIN","GBR","IBS","JPT")
 
-ThousandGenomesPops<-c("")
-
-ThousandGenomesPalette[PCAEVEC$Pop[PCAEVEC$Pop %in% ThousandGenomesPops] <- "" #grey  - this command currently removes all other colours...
-
-                                       
-                                       
+ThousandGenomesPalette[unique(PCAEVEC$Pop) %in% ThousandGenomesPops] <- "#CCCCCC" 
+                                                                              
 ##Print pairwise comparisons of PC1-5 to pdf
 pdf(paste(root,"1kg.LD_pop_strat_PCA.pdf",sep=""))
-    with(PCAEVEC, qplot(PC1,PC2,colour=Pop))
-    with(PCAEVEC, qplot(PC1,PC3,colour=Pop))
-    with(PCAEVEC, qplot(PC1,PC4,colour=Pop))
-    with(PCAEVEC, qplot(PC1,PC5,colour=Pop))
-    with(PCAEVEC, qplot(PC2,PC3,colour=Pop))
-    with(PCAEVEC, qplot(PC2,PC4,colour=Pop))
-    with(PCAEVEC, qplot(PC2,PC5,colour=Pop))
-    with(PCAEVEC, qplot(PC3,PC4,colour=Pop))
-    with(PCAEVEC, qplot(PC3,PC5,colour=Pop))
-    with(PCAEVEC, qplot(PC4,PC5,colour=Pop))
+    with(PCAEVEC, qplot(PC1,PC2,colour=Pop) + scale_colour_manual(values = ThousandGenomesPalette))
+    with(PCAEVEC, qplot(PC1,PC3,colour=Pop) + scale_colour_manual(values = ThousandGenomesPalette))
+    with(PCAEVEC, qplot(PC1,PC4,colour=Pop) + scale_colour_manual(values = ThousandGenomesPalette))
+    with(PCAEVEC, qplot(PC1,PC5,colour=Pop) + scale_colour_manual(values = ThousandGenomesPalette))
+    with(PCAEVEC, qplot(PC2,PC3,colour=Pop) + scale_colour_manual(values = ThousandGenomesPalette))
+    with(PCAEVEC, qplot(PC2,PC4,colour=Pop) + scale_colour_manual(values = ThousandGenomesPalette))
+    with(PCAEVEC, qplot(PC2,PC5,colour=Pop) + scale_colour_manual(values = ThousandGenomesPalette))
+    with(PCAEVEC, qplot(PC3,PC4,colour=Pop) + scale_colour_manual(values = ThousandGenomesPalette))
+    with(PCAEVEC, qplot(PC3,PC5,colour=Pop) + scale_colour_manual(values = ThousandGenomesPalette))
+    with(PCAEVEC, qplot(PC4,PC5,colour=Pop) + scale_colour_manual(values = ThousandGenomesPalette))
 dev.off()
