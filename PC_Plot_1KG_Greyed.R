@@ -4,6 +4,7 @@
 
 ##Load packages
 library(ggplot2)
+library(colorspace)
 
 ##Initialise command line arguments
 args <- commandArgs(TRUE)
@@ -16,8 +17,14 @@ PCAEVEC<-read.table(paste(root,".1kg.LD_pop_strat.pca.evec_RENAMED",sep=""), hea
 colnames(PCAEVEC) <- c("ID","PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8","PC9","PC10","Pop")
 
 ##Define colour palette
-ThousandGenomesPalette<-
+ThousandGenomesPalette<-sequential_hcl(length(unique(PCAEVEC$Pop)))
 
+ThousandGenomesPops<-c("")
+
+ThousandGenomesPalette[PCAEVEC$Pop[PCAEVEC$Pop %in% ThousandGenomesPops] <- "" #grey  - this command currently removes all other colours...
+
+                                       
+                                       
 ##Print pairwise comparisons of PC1-5 to pdf
 pdf(paste(root,"1kg.LD_pop_strat_PCA.pdf",sep=""))
     with(PCAEVEC, qplot(PC1,PC2,colour=Pop))
