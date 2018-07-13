@@ -549,7 +549,7 @@ Include components significantly associated with outcome as covariates in the fi
 
 Details of this procedure can be found at [Timothee Flutre's OpenWetWare](http://openwetware.org/wiki/User:Timothee_Flutre/Notebook/Postdoc/2012/01/22).
 
-Note that the  http://hapmap.ncbi.nlm.nih.gov/downloads/genotypes/2010-08_phaseII+III/forward/ domain referenced by Dr Flutre has since been retired. The HapMap samples are available at ftp://ftp.ncbi.nlm.nih.gov/hapmap/genotypes/2010-08_phaseII+III/forward/
+Note that the  http://hapmap.ncbi.nlm.nih.gov/downloads/genotypes/2010-08_phaseII+III/forward/ domain referenced by Dr Flutre has since been retired. The HapMap samples are available at [ftp://ftp.ncbi.nlm.nih.gov/hapmap/genotypes/2010-08_phaseII+III/forward/](ftp://ftp.ncbi.nlm.nih.gov/hapmap/genotypes/2010-08_phaseII+III/forward/).
 
 _Manually extract HapMap and own cohort individual names_
 
