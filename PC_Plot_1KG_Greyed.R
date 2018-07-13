@@ -23,7 +23,8 @@ names(ThousandGenomesPalette)<-unique(PCAEVEC$Pop)
 ThousandGenomesPops<-c("LWK","MXL","PUR","TSI","YRI","ASW","CEU","CHB","CHS","CLM","FIN","GBR","IBS","JPT")
 
 ThousandGenomesPalette[names(ThousandGenomesPalette) %in% ThousandGenomesPops] <- "#CCCCCC" 
-                                                                              
+ThousandGenomesPalette[!names(ThousandGenomesPalette) %in% ThousandGenomesPops] <-  heat_hcl(length(unique(PCAEVEC$Pop)) - 14, h = c(300, 75), c. = c(35, 95), l = c(15, 90), power = c(0.8, 1.2), fixup = TRUE, gamma = NULL, alpha = 1)
+                                                                             
 ##Print pairwise comparisons of PC1-5 to pdf
 pdf(paste(root,"1kg.LD_pop_strat_PCA.pdf",sep=""))
     with(PCAEVEC, qplot(PC1,PC2,colour=Pop) + scale_colour_manual(values = ThousandGenomesPalette))
