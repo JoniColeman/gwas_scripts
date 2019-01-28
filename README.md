@@ -583,7 +583,7 @@ _Obtain 1KG Phase 1 data from PLINK2 website_
 **WARNING: FILE > 1GB**
 
 ```{bash}
-wget ftp://climb.genomics.cn/pub/10.5524/100001_101000/100116/1kg_phase1_all.tar.gz
+wget https://www.dropbox.com/s/k9ptc4kep9hmvz5/1kg_phase1_all.tar.gz?dl=1
 ```
 
 Note code below creates numerical phenotypes for the 1KG populations. **CHANGE THESE IF THEY WILL OVERLAP WITH YOUR PHENOTYPE DATA!**
