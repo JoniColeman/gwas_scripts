@@ -26,9 +26,9 @@ x2$CHR[x2$CHR=="25"]="XY"
 x2$CHR[x2$CHR=="26"]="MT"
 
 labels <- as.character(sort(as.numeric(unique(x2$CHR))))
-bumblebee<-c("orange",rep.int(c("orange","black"),12)
+bumblebee<-c("orange",rep.int(c("orange","black"),12))
 
-wgplot(x2, pch=".", color=bumblebee, cutoffs=4:9, labels=labels )
+wgplot(x2, pch=".", color=bumblebee, cutoffs=4:round(-log10(min(x2$P)),0), labels=labels )
 
 for (i in 4:20) abline(h=i, col="grey", lty="dotted")
 
@@ -134,7 +134,7 @@ function (data,
     endbp = NULL,
     labels = as.character(c(1:22,"X","Y","XY","MT")),
     xlabel = "Chromosome",
-    ylabel = "-Log10(p-value)", ...) 
+    ylabel = expression(log[10]*" p-value"), ...) 
 {
     if (any(is.na(data)))
         data <- data[-unique(which(is.na(data))%%nrow(data)),]

@@ -1,4 +1,4 @@
-source("manhattan_v2.R")
+source("manhattan_v2_bumblebee.R")
 args <- commandArgs(TRUE)
 
 data <- args[1]
