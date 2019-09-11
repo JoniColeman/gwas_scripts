@@ -1,4 +1,4 @@
-source("manhattan_v2.R")
+source("manhattan_v2_bumblebee.R")
 args <- commandArgs(TRUE)
 root <- args[1]
 gwas1 <- read.table(paste(root,".post_imputation_final_analysis_FOR_MP",sep=""),head=T)
